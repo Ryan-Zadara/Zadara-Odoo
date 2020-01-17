@@ -46,15 +46,7 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Menu 1" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root"/>
-    <menuitem name="Menu 2" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"/>
-
-    <!-- actions -->
-
-    <menuitem name="List" id="zadara_inventory.menu_1_list" parent="zadara_inventory.menu_1"
-              action="zadara_inventory.action_window"/>
-    <menuitem name="Server to list" id="zadara_inventory" parent="zadara_inventory.menu_2"
-              action="zadara_inventory.action_server"/>
+    
 
   </data>
 </odoo>

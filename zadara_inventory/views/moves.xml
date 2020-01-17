@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+      
+          <record model="zadara_inventory.moves" id="model_moves">
+        <field name="name"></field>      
+          <field name="location_source"/>
+          <field name="location_destination"/>
+            <field name="transaction_id"/>
+            <field name="tracking_number"/>
+  
+      </record>
+      
+    <record model="ir.ui.view" id="moves_list">
+      <field name="name">moves list</field>
+      <field name="model">zadara_inventory.moves</field>
+      <field name="arch" type="xml">
+        <tree>
+           <field name="name"/>      
+          <field name="location_source"/>
+          <field name="location_destination"/>
+            <field name="transaction_id"/>
+            <field name="tracking_number"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="moves_action_window">
+      <field name="name">moves window</field>
+      <field name="res_model">zadara_inventory.moves</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="moves_action_server">
+      <field name="name">moves server</field>
+      <field name="model_id" ref="model_zadara_inventory_zadara_inventory"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
+
+    <!-- menu categories -->
+
+ 
+    <menuitem name="moves" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"  action="moves_action_window"/>
+
+    <!-- actions -->
+
+
+  </data>
+</odoo>

@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="zadara_inventory.product" id="model_product">
+        <field name="name"></field>      
+          <field name="product_id"/>
+          <field name="part_number"/>
+            <field name="product_category"/>
+            <field name="product_grab"/>
+            <field name="product_trackSerialNumber"/>
+      </record>
+
+      
+    <record model="ir.ui.view" id="product_list">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.product</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="product_id"/>
+          <field name="part_number"/>
+            <field name="product_category"/>
+            <field name="product_grab"/>
+            <field name="product_trackSerialNumber"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="product_action_window">
+      <field name="name">product window</field>
+      <field name="res_model">zadara_inventory.product</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="moves_action_server">
+      <field name="name">moves server</field>
+      <field name="model_id" ref="model_zadara_inventory_zadara_inventory"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
+
+    <!-- menu categories -->
+
+ 
+    <menuitem name="product" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root"  action="product_action_window"/>
+
+    <!-- actions -->
+
+
+  </data>
+</odoo>
