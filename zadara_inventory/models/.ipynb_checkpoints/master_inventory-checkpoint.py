@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 class masterinventory(models.Model):
     _name = 'zadara_inventory.master_inventory'
     _description = 'zadara_inventory.master_inventory'
-    name = fields.Char()
+   # name = fields.Char()
     
     
 
@@ -19,7 +19,8 @@ class masterinventory(models.Model):
     inv_product_sn = fields.Many2one('zadara_inventory.serialnumbers')#compute="compute_sn")#compute="compute_sn", inverse="inv_compute_sn")
     
     inv_product_quant = fields.Many2one("zadara_inventory.quant")
-    
+    #product_ids = inv_product.ids
+  
     
     
    # @api.depends('inv_product')
@@ -44,5 +45,13 @@ class masterinventory(models.Model):
            #         return 
         
 
-            
+    def check_invforsn(self,sn,producttype):
+        #domain = [('self.inv_product','=','producttype'),'|',('inv_product_sn','=','sn')]
+       # counts = self.env['zadara_inventory.master_inventory'].search_count(domain)
+       # for x in self.filtered(lambda r: r.product_ == producttype):
+        set = self.search([('inv_product','=',producttype.id)])
+        for x in set:
+            if x.inv_product_sn == sn:
+                return False
+        return True
            

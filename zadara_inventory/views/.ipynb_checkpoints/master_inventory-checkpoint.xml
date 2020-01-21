@@ -7,7 +7,7 @@
         
     
     <record model="zadara_inventory.master_inventory" id="model_master_inventory">
-        <field name="name">test</field> 
+        
         <field name="inv_product"/>
          <field name="inv_location"/>
          <field name="inv_product_sn"/>
@@ -47,7 +47,7 @@
       <field name="model">zadara_inventory.master_inventory</field>
       <field name="arch" type="xml">
         <tree>
-        <field name="name"/>
+      
         <field name="inv_product"/>
          <field name="inv_location"/>
          <field name="inv_product_sn"/>

@@ -23,12 +23,14 @@ class serialnumbers(models.Model):
                 return True
         return False
     
-    def check_invforsn(self,sn,producttype):
-        
-        for x in self.filtered(lambda r: r.product_ == producttype):
-            if x.serialnumber == sn:
-                return True 
-        return False
+    #def check_invforsn(self,sn,producttype):
+    #    domain = [('self.product_','=','producttype'),'|',('serialnumber','=','sn')]
+    #    counts = self.env['zadara_inventory.master_inventory'].search_count(domain)
+    #    for x in self.filtered(lambda r: r.product_ == producttype):
+    #    if counts > 1:
+    #        return True 
+    #    else:
+    #        return False
         
     
     
