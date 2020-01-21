@@ -9,7 +9,7 @@
         <tree>
           <field name="name"/>
           <field name="value"/>
-          <field name="value2"/>
+   
         </tree>
       </field>
     </record>
@@ -39,14 +39,6 @@
       </field>
     </record>
 
-
-    <!-- Top menu item -->
-
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
-
-    <!-- menu categories -->
-
-    
-
+      
   </data>
 </odoo>

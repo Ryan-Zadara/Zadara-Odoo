@@ -50,14 +50,6 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
-
-    <!-- menu categories -->
-
- 
-    <menuitem name="locations" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root"  action="locations_action_window"/>
-
-    <!-- actions -->
 
 
   </data>

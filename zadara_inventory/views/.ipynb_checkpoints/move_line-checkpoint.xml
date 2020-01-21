@@ -1,0 +1,84 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition 
+
+
+    <record model="zadara_inventory.move_line" id="model_move_line">
+        <field name="name">test</field> 
+        <field name="inv_product"/>
+         <field name="inv_location"/>
+         <field name="inv_product_sn"/>
+         <field name="inv_product_quant"/>
+              
+               
+        
+
+      </record> -->
+ 
+      
+      
+      <record model="ir.ui.view" id="move_line_form">
+      <field name="name">move_line_</field>
+      <field name="model">zadara_inventory.move_line</field>
+      <field name="arch" type="xml">
+        <tree>
+              
+                   <field name="inv_product"/>
+                     <field name="inv_location"/>
+                <field name="inv_product_sn"/>
+                <field name="inv_product_quant"/>  
+    
+          </tree>
+    </field>
+    </record>
+      
+      
+      <!--
+     
+      
+    <record model="ir.ui.view" id="master_inventory_list">
+      <field name="name">inventory_product_line</field>
+      <field name="model">zadara_inventory.master_inventory</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+
+         
+         
+        </tree>
+      </field>
+    </record> -->
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="move_line_action_window">
+      <field name="name">move_line_window</field>
+      <field name="res_model">zadara_inventory.move_line</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="zadara_inventory.action_server">
+      <field name="name">zadara_inventory server</field>
+      <field name="model_id" ref="model_zadara_inventory_zadara_inventory"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <!-- actions -->
+
+
+  </data>
+</odoo>

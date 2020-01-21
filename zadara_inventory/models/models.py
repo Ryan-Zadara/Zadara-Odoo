@@ -9,10 +9,10 @@ class zadara_inventory(models.Model):
 
     name = fields.Char()
     value = fields.Integer()
-    value2 = fields.Float(compute="_value_pc", store=True)
-    description = fields.Text()
+ 
 
-    @api.depends('value')
-    def _value_pc(self):
-        for record in self:
-            record.value2 = float(record.value) / 100
+            
+class test_(models.Model):
+        _name = 'zadara_inventory.test_'
+       # _inherit = 'zadara_inventory.zadara_inventory'
+        m = fields.Many2many('zadara_inventory.zadara_inventory')

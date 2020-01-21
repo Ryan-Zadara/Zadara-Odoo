@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+  
+
+    <!-- Top menu item -->
+
+    <menuitem name="zadara_inventory" id="zadara_inventory_menu_root"/>
+
+    <!-- menu categories -->
+
+ 
+    <menuitem name="master_inventory" id="zadara_inventory_menu_1" parent="zadara_inventory_menu_root" action="master_inventory_action_window" sequence='10'/>
+       
+      <menuitem name="locations" id="zadara_inventory_menu_4" parent="zadara_inventory_menu_root"  action="locations_action_window" sequence="40"/>
+
+
+    <menuitem name="product" id="zadara_inventory_menu_3" parent="zadara_inventory_menu_root"  action="product_action_window" sequence='30'/>
+ 
+    <menuitem name="moves" id="zadara_inventory_menu_2" parent="zadara_inventory_menu_root"  action="moves_action_window" sequence='20'/>
+   
+      <menuitem name="quantity add" id="zadara_inventory_menu_2_1" parent="zadara_inventory_menu_2"  action="quantity_add_action_window" sequence='25'/>
+           <menuitem name="move line" id="zadara_inventory_menu_2_2" parent="zadara_inventory_menu_2"  action="move_line_action_window" sequence='26'/>
+    <!-- actions -->
+      
+    <menuitem name="sns" id="zadara_inventory_menu_5" parent="zadara_inventory_menu_root"  action="serialnumbers_action_window" sequence="50"/>
+
+
+  </data>
+</odoo>

@@ -1,22 +1,17 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-
-    <record model="zadara_inventory.locations" id="model_locations">
-        <field name="name"></field>
-          <field name="address"></field>
-          <field name="location_type"></field>
-            <field name="location_id"></field>
-      </record>
+  
+   
       
-    <record model="ir.ui.view" id="locations_list">
-      <field name="name">locations list</field>
-      <field name="model">zadara_inventory.locations</field>
+    <record model="ir.ui.view" id="serialnumbers_list">
+      <field name="name">serialnumbers list</field>
+      <field name="model">zadara_inventory.serialnumbers</field>
       <field name="arch" type="xml">
           <tree>
-        <field name="name"/>    
-        <field name="address"/>
-        <field name="location_type"/>
+        <field name="product_"/>    
+        <field name="inventory_"/>
+        <field name="serialnumber"/>
       
           </tree>
       </field>
@@ -25,9 +20,9 @@
 
     <!-- actions opening views on models -->
 
-    <record model="ir.actions.act_window" id="locations_action_window">
-      <field name="name">locations window</field>
-      <field name="res_model">zadara_inventory.locations</field>
+    <record model="ir.actions.act_window" id="serialnumbers_action_window">
+      <field name="name">serialnumbers window</field>
+      <field name="res_model">zadara_inventory.serialnumbers</field>
       <field name="view_mode">tree,form</field>
     </record>
 
@@ -49,6 +44,7 @@
 -->
 
     <!-- Top menu item -->
+
 
 
 

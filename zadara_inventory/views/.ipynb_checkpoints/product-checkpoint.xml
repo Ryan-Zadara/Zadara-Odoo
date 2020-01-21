@@ -54,12 +54,12 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
+    <menuitem name="zadara_inventory" id="zadara_inventory_menu_root"/>
 
     <!-- menu categories -->
 
  
-    <menuitem name="product" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root"  action="product_action_window"/>
+    <menuitem name="product" id="zadara_inventory_menu_3" parent="zadara_inventory_menu_root"  action="product_action_window" sequence='30'/>
 
     <!-- actions -->
 

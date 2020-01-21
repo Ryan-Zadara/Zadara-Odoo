@@ -29,9 +29,15 @@
         'views/views.xml', 
         'views/locations.xml',
         'views/master_inventory.xml',
-        'views/moves.xml',
+        'views/moves.xml' ,
+        'views/move_line.xml',
         'views/product.xml' ,
-        'views/templates.xml'
+        'views/quantity_add.xml' ,
+        'views/templates.xml',
+        'views/serialnumbers.xml',
+        'views/menus.xml'
+       
+       
     ],
     # only loaded in demonstration mode
     'demo': [

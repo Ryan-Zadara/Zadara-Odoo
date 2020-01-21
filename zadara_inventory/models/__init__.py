@@ -6,6 +6,8 @@ from . import master_inventory
 from . import move_line
 from . import moves
 from . import product
+from . import quant
+from . import serialnumbers
 
 
 

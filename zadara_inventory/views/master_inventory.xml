@@ -2,25 +2,59 @@
   <data>
     <!-- explicit list view definition -->
 
+  
 
-      
-      
+        
+    
     <record model="zadara_inventory.master_inventory" id="model_master_inventory">
-        <field name="name">test</field>  
-                <field name="product_ids"/>
-            <field name="product_location"/>
-           <!-- --> <field name="product_sn"/>
-      </record>
+        <field name="name">test</field> 
+        <field name="inv_product"/>
+         <field name="inv_location"/>
+         <field name="inv_product_sn"/>
+         <field name="inv_product_quant"/>
+              
+               
+        
+
+      </record> 
+      <!--
+      <record model="ir.ui.view" id="master_inventory_form">
+           <field name="name">inventoryform</field>
+            <field name="model">zadara_inventory.master_inventory</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                              </group>  
+                        <notebook>
+                            <page string="stuff">
+                            <field name="inv_product"/>
+                                     <field name="inv_location"/>
+                                     <field name="inv_product_sn"/>
+                             <field name="inv_product_quant"/>
+                            </page>
+                        </notebook>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+      
       
     <record model="ir.ui.view" id="master_inventory_list">
-      <field name="name">master_inventory list</field>
+      <field name="name">inventory_product_line</field>
       <field name="model">zadara_inventory.master_inventory</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-        <field name="product_ids"/>
-            <field name="product_location"/>
-          <!-- --> <field name="product_sn"/>
+        <field name="name"/>
+        <field name="inv_product"/>
+         <field name="inv_location"/>
+         <field name="inv_product_sn"/>
+         <field name="inv_product_quant"/>
+
+         
+         
         </tree>
       </field>
     </record>
@@ -53,13 +87,7 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
-
-    <!-- menu categories -->
-
-    <menuitem name="master_inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root" action="master_inventory_action_window"/>
-    
-
+   
     <!-- actions -->
 
 
