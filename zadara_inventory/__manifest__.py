@@ -26,6 +26,13 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/location.xml',
+        'views/master_inventory.xml',
+        'views/moves.xml',
+        'views/product.xml',
+        'views/update_quantity.xml',
+        'views/transfer.xml',
+        'views/menus.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

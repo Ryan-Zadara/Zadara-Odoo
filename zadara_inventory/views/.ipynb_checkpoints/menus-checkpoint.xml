@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    
+
+    <!-- Top menu item -->
+
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="master_inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root"  action="zadara_inventory_master_inventory"/>
+    
+      <menuitem name="product" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root" action="zadara_inventory_product"/>
+      
+            <menuitem name="locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root" action="zadara_inventory_locations"/>
+
+    <menuitem name="moves" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root" action="zadara_inventory_moves"/>
+     
+
+    <!-- actions -->
+
+    <menuitem name="List" id="zadara_inventory.menu_1_1" parent="zadara_inventory.menu_4"
+              action="update_quantity_action_window"/>
+          <menuitem name="transfers" id="zadara_inventory.menu_1_2" parent="zadara_inventory.menu_4"
+              action="transfer_action_window"/>
+  
+
+  </data>
+</odoo>
