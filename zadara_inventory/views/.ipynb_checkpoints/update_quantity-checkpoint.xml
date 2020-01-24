@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="update_quantity_list">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.update_quantity</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="update_quantity_name"/>
+          <field name="location_id"/>
+          <field name="product_name"/>
+        <field name="serial_number"/>
+             <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="update_quantity_action_window">
+      <field name="name">update qunatity window</field>
+      <field name="res_model">zadara_inventory.update_quantity</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+    <!-- Top menu item -->
+
+   
+
+  </data>
+</odoo>

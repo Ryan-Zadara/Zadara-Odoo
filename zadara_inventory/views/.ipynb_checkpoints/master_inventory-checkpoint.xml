@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="master_inventory_list">
+      <field name="name">master_inventory list</field>
+      <field name="model">zadara_inventory.master_inventory</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product_id"/>
+          <field name="serial_number"/>
+          <field name="location_id"/> 
+            <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="zadara_inventory_master_inventory">
+      <field name="name">master_inventory window</field>
+      <field name="res_model">zadara_inventory.master_inventory</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+  
+  </data>
+</odoo>
