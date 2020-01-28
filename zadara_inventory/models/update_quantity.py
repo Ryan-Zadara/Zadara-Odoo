@@ -13,12 +13,17 @@ class update_quantity(models.Model):
     
     product_id = fields.Many2one('zadara_inventory.product')
     
+    #product_trackSerialNumber = fields.Boolean(related="product_id.product_trackSerialNumber")
+    
     product_name = fields.Char(related="product_id.product_name")
     
     serial_number = fields.Char()
     
     quantity = fields.Integer()
-
+    
+    #@api.onchange('product_id')
+    #def fix_track(self):
+    #    self.product_trackSerialNumber = self.product_id.product_trackSerialNumber
     #relation 
     #move = fields.Many2one('zadara_inventory.moves')
     
@@ -34,7 +39,7 @@ class update_quantity(models.Model):
                 #if not 
                     #create instance with quantity at 
     def check_create_qu(self,q):
-        if q != 1 or q != 0:
+        if q >1 or q < 0:
             raise UserError("bad")
     
     def pre_checks(self,q):
@@ -44,24 +49,43 @@ class update_quantity(models.Model):
     
     @api.model_create_multi
     def create(self,vals_list):
-        track = 0
+        
         for val in vals_list:
+            if not val.get('product_id'):
+                raise UserError("no product")
             q = val.get('quantity')
             self.pre_checks(q)
-            x = self.env['zadara_inventory.product'].search_count([['product_id', '=', val.get('product_id')], ['product_trackSerialNumber', '=', True]])
-            if self.env['zadara_inventory.product'].search([['product_id', '=', val.get('product_id')], ['product_trackSerialNumber', '=', True]]):
-                raise UserError("break")
-                if val.get('serial_number') == "" or val.get('serial_number') == 'N/A':
+            track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
+            if not val.get('location_id'):
+                raise UserError("no location")
+            if track:
+                if not val.get('serial_number'):
                     raise UserError('bad sn line')
-                te = self.env['zadara_inventory.master_inventory'].search(['serial_number', '=', val.get('serial_number')]) 
-                if self.env['zadara_inventory.master_inventory'].browse(te).contains(val.get('product_id')):
-                    raise UserError("bad sn line ")
-            raise UserError(self.product_id.product_id.id)  
+                if val.get('serial_number') == 'N/A':
+                    raise UserError('bad sns')                
+                if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]):
+                    if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','!=', val.get('quantity')]]):
+                        #del val["product_trackSerialNumber"]
+                        del val["update_quantity_name"]
+                        return self.write_to_mi(val)
+                    elif self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','=', val.get('quantity')]]):
+                        raise UserError("cannot have 2 same serial numbers ")
+                self.check_create_qu(q) 
+            else:
+                val['serial_number'] = "N/A"
+                if self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]):
+                    del val["update_quantity_name"]
+                    return self.write_to_mi(val)
                 
-            track = track +1
+                    
+                    
+             
+                
+          
         res = super(update_quantity, self).create(vals_list)
         for vals in vals_list:
-            del vals["update_quantity_name"]
+            if vals.get('update_quantity_name'):
+                del vals["update_quantity_name"]
             #del vals["product_name"]
             self.create_to_mi(vals)
         return res
@@ -72,11 +96,15 @@ class update_quantity(models.Model):
     def create_to_mi(self, vals_list):
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
 
-    
+    def write_to_mi(self,vals_list):
+        
+        x = vals_list.get('product_id')
+        sn = vals_list.get('serial_number')
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn]])
+        
+        return mi.write(vals_list)
     
     def write(self,vals_list):
-        if self.serial_number == '1':
-            self.serial_number = 'none'
         res = super(update_quantity, self).write(vals_list)
         return res
     # def sn_no_null(self):

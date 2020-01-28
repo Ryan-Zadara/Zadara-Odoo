@@ -16,6 +16,8 @@ class product(models.Model):
     
     product_trackSerialNumber = fields.Boolean()
     
+    def get_track(self):
+        return self.product_trackSerialNumber
     
     #context
     #_product_id = fields.Many2one('zadara_inventory.product')
