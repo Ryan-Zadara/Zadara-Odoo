@@ -6,3 +6,5 @@ access_zadara_inventory_moves,zadara_inventory.moves,model_zadara_inventory_move
 access_zadara_inventory_locations,zadara_inventory.locations,model_zadara_inventory_locations,base.group_user,1,1,1,1
 access_zadara_inventory_update_quantity,zadara_inventory.update_qunatity,model_zadara_inventory_update_quantity,base.group_user,1,1,1,1
 access_zadara_inventory_transfer,zadara_inventory.transfer,model_zadara_inventory_transfer,base.group_user,1,1,1,1
+
+access_zadara_inventory_product_history,zadara_inventory.product_history,model_zadara_inventory_product_history,base.group_user,1,1,1,1
