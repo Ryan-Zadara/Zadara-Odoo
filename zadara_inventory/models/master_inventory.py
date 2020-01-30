@@ -21,6 +21,7 @@ class master_inventory(models.Model):
     quantity = fields.Integer()
     #product_ids = inv_product.ids
   
+    
 
     #def check_invforsn(self,pid,sn):
      #   for i in self:
@@ -32,6 +33,7 @@ class master_inventory(models.Model):
     @api.model_create_multi
     def create(self,vals_list):
         res = super(master_inventory, self).create(vals_list)
+        
         return res
     
     def get_recordset(self, pids):
@@ -43,4 +45,4 @@ class master_inventory(models.Model):
         res = super(master_inventory, self).write(vals_list)
         return res
         
-                
+        

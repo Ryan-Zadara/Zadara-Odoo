@@ -1,0 +1,71 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+      
+    <record model="ir.ui.view" id="product_history_list">
+      <field name="name">product_histy list</field>
+      <field name="model">zadara_inventory.product_history</field>
+      <field name="arch" type="xml">
+       <tree>
+           
+            <field name="product_id"/>
+           <field name="date_" invisible='1'/>
+           
+           <button name="launch_session_wizard" type="object"
+                string="Subscribe"/>
+                        
+      
+         
+          
+        
+          </tree>
+      </field>
+    </record>
+      
+    <record model="ir.ui.view" id="product_history_form">
+      <field name="name">product_histy list</field>
+      <field name="model">zadara_inventory.product_history</field>
+      <field name="arch" type="xml">
+       <form>
+           <group>
+            <field name="product_id"/>
+           <field name="date_" invisible='1'/>
+           </group>
+           <button name="launch_session_wizard" type="object"
+                string="Subscribe"/>
+                        
+      
+         
+          
+        
+          </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models-->
+
+    <record model="ir.actions.act_window" id="zadara_inventory_product_history">
+      <field name="name">lwindow</field>
+      <field name="res_model">zadara_inventory.product_history</field>
+      <field name="view_mode">tree,form</field> 
+    <field name="view_id" ref="product_history_list"/>
+    </record>
+        
+
+    
+    
+ 
+ 
+
+    <!-- server action to the one above -->
+
+   
+
+    <!-- Top menu item -->
+
+   
+
+  </data>
+</odoo>

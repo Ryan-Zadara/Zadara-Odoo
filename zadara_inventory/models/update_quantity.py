@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
+from datetime import datetime
 
 class update_quantity(models.Model):
     _name = 'zadara_inventory.update_quantity'
@@ -20,6 +21,12 @@ class update_quantity(models.Model):
     serial_number = fields.Char()
     
     quantity = fields.Integer()
+    
+    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')])
+    
+    update_date = fields.Datetime(default=datetime.now())
+    
+    update_tag = fields.Char(readonly=True)
     
     #@api.onchange('product_id')
     #def fix_track(self):
@@ -53,6 +60,10 @@ class update_quantity(models.Model):
         for val in vals_list:
             if not val.get('product_id'):
                 raise UserError("no product")
+            if val.get('reponsible_party') == '':
+                raise UserError("no responsible party")
+            #if not val.get('update_date'):
+            #    val['update_date'] = datetime.now()
             q = val.get('quantity')
             self.pre_checks(q)
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
@@ -66,17 +77,20 @@ class update_quantity(models.Model):
                 if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]):
                     if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','!=', val.get('quantity')]]):
                         #del val["product_trackSerialNumber"]
-                        del val["update_quantity_name"]
-                        return self.write_to_mi(val)
+                        #del val["update_quantity_name"]
+                        val['update_tag'] = 'write'
                     elif self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','=', val.get('quantity')]]):
                         raise UserError("cannot have 2 same serial numbers ")
-                self.check_create_qu(q) 
+                else:        
+                    val['update_tag'] = 'create'
+                #self.check_create_qu(q) 
             else:
                 val['serial_number'] = "N/A"
                 if self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]):
-                    del val["update_quantity_name"]
-                    return self.write_to_mi(val)
-                
+                    #del val["update_quantity_name"]
+                    val['update_tag'] = 'write'#self.write_to_mi(val)
+                else:
+                    val['update_tag'] = 'create'
                     
                     
              
@@ -84,10 +98,19 @@ class update_quantity(models.Model):
           
         res = super(update_quantity, self).create(vals_list)
         for vals in vals_list:
+            
             if vals.get('update_quantity_name'):
                 del vals["update_quantity_name"]
-            #del vals["product_name"]
-            self.create_to_mi(vals)
+        
+            del vals['responsible_party']
+            hi = self.env['zadara_inventory.product_history'].create(vals)
+            del vals["update_date"]
+            if vals.get('update_tag') == 'create':
+                del vals['update_tag']
+                self.create_to_mi(vals)
+            else:
+                del vals['update_tag']
+                self.write_to_mi(vals)
         return res
     
    
@@ -107,6 +130,10 @@ class update_quantity(models.Model):
     def write(self,vals_list):
         res = super(update_quantity, self).write(vals_list)
         return res
+    
+    
+    
+    
     # def sn_no_null(self):
 
         #for i in self:
