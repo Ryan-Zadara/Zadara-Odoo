@@ -28,7 +28,8 @@
   
     <menuitem name="List" id="zadara_inventory.menu_5_1" parent="zadara_inventory.menu_5"
               action="zadara_inventory_product_history"/>
-          <menuitem name="transfers" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
-              action="launch_session_wizard"/>   
+          
+      <menuitem name="transfers" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
+              action="launch_session_wizard"/>    
   </data>
 </odoo>

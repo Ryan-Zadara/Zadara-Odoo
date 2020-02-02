@@ -33,7 +33,8 @@ class master_inventory(models.Model):
     @api.model_create_multi
     def create(self,vals_list):
         res = super(master_inventory, self).create(vals_list)
-        
+        vals_list[0].update({'mi_id':self.id})
+        self.env['zadara_inventory.product_history'].create(vals_list)
         return res
     
     def get_recordset(self, pids):
@@ -43,6 +44,8 @@ class master_inventory(models.Model):
                              
     def write(self,vals_list):
         res = super(master_inventory, self).write(vals_list)
+        vals_list[0].update({'mi_id':self.id})
+        self.env['zadara_inventory.product_history'].create(vals_list)
         return res
         
         

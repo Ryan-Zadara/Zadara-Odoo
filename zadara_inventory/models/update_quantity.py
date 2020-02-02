@@ -46,7 +46,7 @@ class update_quantity(models.Model):
                 #if not 
                     #create instance with quantity at 
     def check_create_qu(self,q):
-        if q >1 or q < 0:
+        if q > 1 or q < 0:
             raise UserError("bad")
     
     def pre_checks(self,q):
@@ -64,8 +64,9 @@ class update_quantity(models.Model):
                 raise UserError("no responsible party")
             #if not val.get('update_date'):
             #    val['update_date'] = datetime.now()
-            q = val.get('quantity')
-            self.pre_checks(q)
+            
+            if 0 > val.get("quantity"):
+                raise UserError(val.get("serial_number"))
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
             if not val.get('location_id'):
                 raise UserError("no location")
@@ -101,16 +102,18 @@ class update_quantity(models.Model):
             
             if vals.get('update_quantity_name'):
                 del vals["update_quantity_name"]
-        
-            del vals['responsible_party']
-            hi = self.env['zadara_inventory.product_history'].create(vals)
-            del vals["update_date"]
+            if vals.get('responsible_party'):
+                del vals['responsible_party']
+            #self.env['zadara_inventory.product_history'].create(vals)
+            if vals.get('update_date'):
+                del vals['update_date']
             if vals.get('update_tag') == 'create':
                 del vals['update_tag']
                 self.create_to_mi(vals)
             else:
                 del vals['update_tag']
                 self.write_to_mi(vals)
+        
         return res
     
    
@@ -123,7 +126,7 @@ class update_quantity(models.Model):
         
         x = vals_list.get('product_id')
         sn = vals_list.get('serial_number')
-        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn]])
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn]['location_id','=',vals_list.get('location_id')]])
         
         return mi.write(vals_list)
     
