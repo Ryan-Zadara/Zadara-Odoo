@@ -9,5 +9,5 @@ class locations(models.Model):
 
     name = fields.Char()
     address = fields.Char()
-    location_type = fields.Char()
+    location_type = fields.Selection([('Warehouse','Warehouse'), ('Customer','Customer'),('Vendor','Vendor')])
     #location_id = fields.Char(readonly="true")

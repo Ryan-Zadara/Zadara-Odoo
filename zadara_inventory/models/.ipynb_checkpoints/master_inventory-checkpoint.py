@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError , UserError
 
 class master_inventory(models.Model):
     _name = 'zadara_inventory.master_inventory'
@@ -30,8 +30,16 @@ class master_inventory(models.Model):
        #             return True
         #        raise ValidationError(pid) 
         
+    #def get_tot_qunant(self,product_):
+        #q = self.env['zadara_inventory.product'].search([''])
+       # for x in 
+        #    raise UserError(x)
+        
+        #    i = i + x.quantity
+      #  return 1
     @api.model_create_multi
     def create(self,vals_list):
+  
         res = super(master_inventory, self).create(vals_list)
         vals_list[0].update({'mi_id':self.id})
         self.env['zadara_inventory.product_history'].create(vals_list)
@@ -41,10 +49,12 @@ class master_inventory(models.Model):
         rset = self.env.ref(pids,['zadara_inventory.master_inventory'])
         return rset                 
                              
-                             
+                         
     def write(self,vals_list):
+        
         res = super(master_inventory, self).write(vals_list)
-        vals_list[0].update({'mi_id':self.id})
+       # x = self.
+        vals_list.update({'mi_id':self.id})
         self.env['zadara_inventory.product_history'].create(vals_list)
         return res
         

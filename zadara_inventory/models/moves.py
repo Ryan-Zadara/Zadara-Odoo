@@ -13,5 +13,5 @@ class moves(models.Model):
     
     move_date = fields.Char()
     
-    update_quantity_name = fields.Char(related='uq_move_id.update_quantity_name')
+    #update_quantity_name = fields.Char(related='uq_move_id.update_quantity_name')
     
