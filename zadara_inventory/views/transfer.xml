@@ -1,0 +1,58 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+        transfer_name = fields.Char()
+    
+    transfer_type = fields.Char()
+    
+    source_location_id = fields.Many2one('zadara_inventory.locations')
+    
+    destination_location_id = fields.Many2one('zadara_inventory.locations')
+    
+    location_id  = fields.Many2one('zadara_inventory.locations', readonly=True)
+   
+    product_id = fields.Many2one('zadara_inventory.product')
+    
+    product_name = fields.Char(related="product_id.product_name")
+    
+    serial_number = fields.Char()
+    
+    quantity = fields.Integer()
+    <record model="ir.ui.view" id="transfer_list">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.transfer</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="transfer_name"/>
+                     <field name="source_location_id"/>
+                     <field name="destination_location_id"/>
+          <field name="location_id"/>
+                   
+          <field name="product_name"/>
+        <field name="serial_number"/>
+             <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="transfer_action_window">
+      <field name="name">transfer window</field>
+      <field name="res_model">zadara_inventory.transfer</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+    <!-- Top menu item -->
+
+   
+
+  </data>
+</odoo>

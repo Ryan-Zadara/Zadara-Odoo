@@ -1,0 +1,35 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="moves_list">
+      <field name="name">moves list</field>
+      <field name="model">zadara_inventory.moves</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="uq_move_id"/>
+          <field name="move_date"/>
+          
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="zadara_inventory_moves">
+      <field name="name">moves window</field>
+      <field name="res_model">zadara_inventory.moves</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+    <!-- Top menu item -->
+
+   
+  </data>
+</odoo>

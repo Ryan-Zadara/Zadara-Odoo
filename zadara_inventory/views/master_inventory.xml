@@ -1,0 +1,66 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="master_inventory_list">
+      <field name="name">master_inventory list</field>
+      <field name="model">zadara_inventory.master_inventory</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product_id"/>
+          <field name="serial_number"/>
+          <field name="location_id"/> 
+            <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+
+      
+      
+            <record model="ir.ui.view" id="master_inventory_kanban">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.master_inventory</field>
+      <field name="arch" type="xml">
+          <kanban>                
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="serial_number"/>
+                <field name="quantity"/>
+                              
+
+              <templates>
+                 
+              <t t-name="kanban-box">
+                  <div class="oe_kanban_details">
+                      <strong class='o_kanban_record_title'><field name="product_id"/></strong>
+              <div class='o_kanban_tags_section'>
+                  <ul>
+                      <li>Product Name: <field name="product_id"/> </li>
+                      <li>Quantity <field name="quantity"/> </li>
+                      <li>Location: <field name="location_id"/> </li>
+                  </ul>
+
+              </div>
+                  </div>
+              </t>
+                  </templates>
+          </kanban>
+          </field>
+          </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="zadara_inventory_master_inventory">
+      <field name="name">master_inventory window</field>
+      <field name="res_model">zadara_inventory.master_inventory</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+  
+  </data>
+</odoo>
