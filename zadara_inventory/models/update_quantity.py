@@ -8,7 +8,7 @@ class update_quantity(models.Model):
     _name = 'zadara_inventory.update_quantity'
     _description = 'zadara_inventory.upadate_quantity'
 
-    update_quantity_name = fields.Char()
+    update_quantity_name = fields.Integer(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
     
     location_id = fields.Many2one('zadara_inventory.locations')
     
@@ -28,6 +28,12 @@ class update_quantity(models.Model):
     
     update_tag = fields.Char(readonly=True)
     
+   
+    def comp_qn(self):
+        x = self.env['zadara_inventory.update_quantity'].search([],order="update_quantity_name desc", limit=1)
+        r = x.update_quantity_name + 1
+        self.update_quantity_name = r
+        return r
     #@api.onchange('product_id')
     #def fix_track(self):
     #    self.product_trackSerialNumber = self.product_id.product_trackSerialNumber
@@ -71,6 +77,8 @@ class update_quantity(models.Model):
             if not val.get('location_id'):
                 raise UserError("no location")
             if track:
+                if val.get('quantity') < 0 or val.get('quantity') > 1:
+                    raise UserError("bad qunatity")
                 if not val.get('serial_number'):
                     raise UserError('bad sn line')
                 if val.get('serial_number') == 'N/A':
@@ -125,8 +133,9 @@ class update_quantity(models.Model):
     def write_to_mi(self,vals_list):
         
         x = vals_list.get('product_id')
+     
         sn = vals_list.get('serial_number')
-        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn]['location_id','=',vals_list.get('location_id')]])
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
         
         return mi.write(vals_list)
     
