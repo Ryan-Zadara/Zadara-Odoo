@@ -11,6 +11,7 @@
           <field name="serial_number"/>
           <field name="location_id"/> 
             <field name="quantity"/>
+         
         </tree>
       </field>
     </record>

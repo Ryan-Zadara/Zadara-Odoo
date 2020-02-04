@@ -8,7 +8,7 @@ class update_quantity(models.Model):
     _name = 'zadara_inventory.update_quantity'
     _description = 'zadara_inventory.upadate_quantity'
 
-    update_quantity_name = fields.Integer(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
+    update_quantity_name = fields.Char(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
     
     location_id = fields.Many2one('zadara_inventory.locations')
     
@@ -25,15 +25,27 @@ class update_quantity(models.Model):
     responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')])
     
     update_date = fields.Datetime(default=datetime.now())
-    
+    #def date_set(self):
+     #   return datetime.now()
     update_tag = fields.Char(readonly=True)
     
-   
+    @api.depends('update_date')
     def comp_qn(self):
-        x = self.env['zadara_inventory.update_quantity'].search([],order="update_quantity_name desc", limit=1)
-        r = x.update_quantity_name + 1
-        self.update_quantity_name = r
+        if self.update_date == False:
+            #self.date_set()
+            raise UserError(self.update_date)
+        r = self.update_date.to_string()
         return r
+        #x = self.env['zadara_inventory.update_quantity'].search([],order="update_quantity_name desc", limit=1)
+        #self.update_quantity_name = x.update_quantity_name
+        #raise UserError(datetime.now()-)
+        #if datetime.now() == self.update_date:
+            
+         #   r = x.update_quantity_name
+        #self.update_quantity_name = r
+        #else:
+         #   r = x.update_quantity_name+1
+        #return r
     #@api.onchange('product_id')
     #def fix_track(self):
     #    self.product_trackSerialNumber = self.product_id.product_trackSerialNumber
@@ -62,7 +74,9 @@ class update_quantity(models.Model):
     
     @api.model_create_multi
     def create(self,vals_list):
-        
+       # uqn_val = self.comp_qn()
+       # for x in vals_list:
+         #   x['update_quantity_name'] = uqn_val
         for val in vals_list:
             if not val.get('product_id'):
                 raise UserError("no product")

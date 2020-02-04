@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import copy
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
@@ -34,7 +34,8 @@ class transfer(models.Model):
     
     transfer_tag = fields.Char(readonly=True)
 
-    
+    transfer_source_flag = fields.Char(readonly=True)
+    transfer_source_quant = fields.Integer()
     def comp_tn(self):
         x = self.env['zadara_inventory.transfer'].search([],order="transfer_name desc", limit=1)
         r = x.transfer_name + 1
@@ -59,7 +60,8 @@ class transfer(models.Model):
     @api.model_create_multi
     def create(self,vals_list):
         for val in vals_list:
-            
+            val['transfer_source_flag'] = "no"
+            val['transfer_source_quant'] = 0
             #if val.get('quantity') < 0:
             #    raise UserError("quantity cannot be less than zero")
             #if not val.get('source_location_id'):
@@ -82,40 +84,75 @@ class transfer(models.Model):
                 if val.get('serial_number') == 'N/A':
                     raise UserError('bad sns')
                 
-                if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')],['quantity','=',val.get('quantity')]]):
+                if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')],['quantity','=',val.get('quantity')]]) and val.get('quantity') == 1:
                     val['location_id'] = val['destination_location_id']
                     val['transfer_tag'] = 'write'
+                    #val['transfer_source_flag'] = 'yes'
+                   # sq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]]).quantity
+                   # dq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('destination_location_id')]]).quantity
+                   # val['transfer_source_quant'] = 0 
                     #do stuff here
                 else:
                     raise UserError(val.get('serial_number'))
             else:
+
                 if val.get('serial_number') != 'N/A':
-                    val['serial_number'] = 'N/A'
+                    val['serial_number'] = 'N/A'                
+                sq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]]).quantity
                  # find prodcut location and and check if quantity is > quantity 
-                if not self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')],['quantity','>=',val.get('quantity')]]):
-                    raise UserError("not enough inventory at destination location")
-                if not self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')]]):
+                resour = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('source_location_id')]])
+                if resour:
+
+                        #val['quantity'] = val['quantity']
+                    val['transfer_source_flag'] = 'yes'
+                    val['transfer_source_quant'] = sq - val.get('quantity')
                 
+                if sq < val.get('quantity'):
+                    #raise UserError("not enough inventory at source location")
+                    raise UserError(sq)
+                if not self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')]]):
+
                     val['location_id'] = val['destination_location_id']
                     val['transfer_tag'] = 'create'
+                    
                 else:
-                    other_quantity = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('source_location_id')]]).get('quantity')
-                    val['quantity'] = other_quantity - quantity 
+                    other_quantity = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')]]).quantity
+                    val['quantity'] = other_quantity + val['quantity'] 
                     val['location_id'] = val['destination_location_id']
                     val['transfer_tag'] = 'write'
+                
+            
+            
+            
             
         res = super(transfer, self).create(vals_list)
         for vals in vals_list:
             #del vals['transfer_name']
           
                 #vals['location_id'] = vals['destination_location_id']
+           
             del vals['destination_location_id']
-            del vals['source_location_id']
+           
             del vals['transfer_date']
             del vals['responsible_party']
-            del vals['transfer_type']
+            del vals['transfer_type'] 
+            source_vals = copy.deepcopy(vals)
+            if vals.get("transfer_source_flag") == 'yes':
+                #temp = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]])
+                source_vals['location_id'] = source_vals.get('source_location_id')
+                source_vals['quantity'] = source_vals.get('transfer_source_quant')
+                del source_vals['source_location_id']
+                del source_vals['transfer_source_quant']
+                del source_vals['transfer_source_flag']
+                del source_vals['transfer_tag']
+                self.write_to_mi(source_vals)
+                
+            del vals['transfer_source_quant']
+            del vals['transfer_source_flag']
+            del vals['source_location_id']
             if vals.get('transfer_tag') == 'write':
-                del vals['transfer_tag']
+                del vals['transfer_tag'] 
+                
                 self.write_to_mi(vals)
             else:
                 del vals['transfer_tag']
@@ -123,13 +160,14 @@ class transfer(models.Model):
         return res
     
    
-  
+    #def set_loc_quant(self):
+        
   
     def write_to_mi(self, vals_list):
         x = vals_list.get('product_id')
         sn = vals_list.get('serial_number')
      
-        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn]])
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
   
         return mi.write(vals_list)
     
@@ -139,3 +177,9 @@ class transfer(models.Model):
     def create_to_mi(self, vals_list):
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
     
+
+    
+    
+                   #     sq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]]).quantity
+                #    dq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('destination_location_id')]]).quantity
+                 #   val['transfer_source_quant'] =#

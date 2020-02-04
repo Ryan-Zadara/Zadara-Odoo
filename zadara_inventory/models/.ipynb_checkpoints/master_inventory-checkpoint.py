@@ -9,7 +9,7 @@ class master_inventory(models.Model):
    # name = fields.Char()
     
     
-
+    
     
     product_id = fields.Many2one('zadara_inventory.product')
     
@@ -20,7 +20,9 @@ class master_inventory(models.Model):
     
     quantity = fields.Integer()
     #product_ids = inv_product.ids
-  
+    
+ 
+        
     
 
     #def check_invforsn(self,pid,sn):
@@ -37,18 +39,34 @@ class master_inventory(models.Model):
         
         #    i = i + x.quantity
       #  return 1
-    @api.model_create_multi
+    @api.model
     def create(self,vals_list):
   
         res = super(master_inventory, self).create(vals_list)
-        vals_list[0].update({'mi_id':self.id})
-        self.env['zadara_inventory.product_history'].create(vals_list)
+        vals_list.update({'mi_id':self.id})
+        #self.env['zadara_inventory.product_history'].create(vals_list)
+        
+        #f = self.env['zadara_inventory.product']
+        
+        #f.compute_quantity(vals_list.get('product_id'))
         return res
     
     def get_recordset(self, pids):
         rset = self.env.ref(pids,['zadara_inventory.master_inventory'])
         return rset                 
-                             
+    
+    def return_tq(self,p_id):
+       
+        tot = 0
+       # raise UserError(self)
+        for x in self: 
+            
+            if x.product_id.id == p_id:
+                #raise UserError(p_id)
+                tot = tot + x.quantity 
+                
+               
+        return tot
                          
     def write(self,vals_list):
         
@@ -56,6 +74,9 @@ class master_inventory(models.Model):
        # x = self.
         vals_list.update({'mi_id':self.id})
         self.env['zadara_inventory.product_history'].create(vals_list)
+       # self.env['zadara_inventory.product'].search(['id','=',vals_list.get('product_id')]).compute_quantity()
         return res
         
+        
+   
         

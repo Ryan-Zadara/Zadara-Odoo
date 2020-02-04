@@ -2,6 +2,7 @@
 
 from odoo import fields, models, _
 from datetime import datetime
+from odoo.exceptions import ValidationError , UserError
 
 
 class inv_report_calc(models.TransientModel):
@@ -17,16 +18,19 @@ class inv_report_calc(models.TransientModel):
     def calc_at_date(self):
         #if self.locations == None:
             #location_id = self.env['zadara_inventory.product_history'].get.context('product_history')
+        
         products = self.env['zadara_inventory.product'].search([])
         all = self.env['zadara_inventory.product_history']
+        #for_search  = self.env['zadara_inventory.product_history'].search([])
         mi_t = self.env['zadara_inventory.master_inventory'].search([])
         if not self.location_id:
             for x in mi_t:
                 updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.product_id.id],['mi_id.serial_number','=',x.serial_number]),order="date_ asc", limit=1)
                 all = updates | all 
         else:
-            for x in products:
-                updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.id],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
+            for x in mi_t:
+                updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.product_id.id],['mi_id.serial_number','=',x.serial_number],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
+                #updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.id],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
                 all = updates | all 
         action = {
             'type': 'ir.actions.act_window',
