@@ -15,7 +15,7 @@ class product_history(models.Model):
    # @api.onchange('mi_id')
     #def get_pid(self):
      #   self.mi_product_id = self.mi_id.product_id
-    
+    total_quantity = fields.Char()
     location_id  = fields.Many2one('zadara_inventory.locations')
     quantity = fields.Integer()
     date_ = fields.Datetime(default=datetime.now())
