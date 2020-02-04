@@ -32,6 +32,17 @@ class inv_report_calc(models.TransientModel):
                 updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.product_id.id],['mi_id.serial_number','=',x.serial_number],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
                 #updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.id],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
                 all = updates | all 
+        
+       
+        for x in all:
+            unt = self.env['zadara_inventory.master_inventory'].search([])
+            count = unt.return_tq(x.mi_product_id.id)
+            #raise UserError(count)
+            
+            x.total_quantity = count
+        
+        
+        
         action = {
             'type': 'ir.actions.act_window',
             #'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
