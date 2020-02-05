@@ -28,7 +28,7 @@
                      <field name="source_location_id"/>
                      <field name="destination_location_id"/>
           <field name="location_id"/>
-                   
+            <field name="move_info"/>        
           <field name="product_name"/>
         <field name="serial_number"/>
              <field name="quantity"/>

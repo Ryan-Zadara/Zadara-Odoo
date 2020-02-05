@@ -111,6 +111,8 @@ class update_quantity(models.Model):
                 val['serial_number'] = "N/A"
                 if self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]):
                     #del val["update_quantity_name"]
+                    p = self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]).quantity
+                    val['quantity'] = val.get('quantity') + p
                     val['update_tag'] = 'write'#self.write_to_mi(val)
                 else:
                     val['update_tag'] = 'create'
@@ -142,16 +144,19 @@ class update_quantity(models.Model):
   
     @api.model
     def create_to_mi(self, vals_list):
+        
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
         
         x = vals_list.get('product_id')
-     
+        
         sn = vals_list.get('serial_number')
         mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
-        
-        return mi.write(vals_list)
+        mi.write(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
+        return 
     
     def write(self,vals_list):
         res = super(update_quantity, self).write(vals_list)

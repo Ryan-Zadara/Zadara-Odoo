@@ -8,7 +8,7 @@ class update_quantity(models.Model):
     _name = 'zadara_inventory.update_quantity'
     _description = 'zadara_inventory.upadate_quantity'
 
-    update_quantity_name = fields.Char(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
+    #update_quantity_name = fields.Char(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
     
     location_id = fields.Many2one('zadara_inventory.locations')
     
@@ -29,13 +29,13 @@ class update_quantity(models.Model):
      #   return datetime.now()
     update_tag = fields.Char(readonly=True)
     
-    @api.depends('update_date')
-    def comp_qn(self):
-        if self.update_date == False:
+    #@api.depends('update_date')
+    #def comp_qn(self):
+    #    if self.update_date == False:
             #self.date_set()
-            raise UserError(self.update_date)
-        r = self.update_date.to_string()
-        return r
+    #        raise UserError(self.update_date)
+    #    r = self.update_date.to_string()
+    #    return r
         #x = self.env['zadara_inventory.update_quantity'].search([],order="update_quantity_name desc", limit=1)
         #self.update_quantity_name = x.update_quantity_name
         #raise UserError(datetime.now()-)
@@ -111,6 +111,8 @@ class update_quantity(models.Model):
                 val['serial_number'] = "N/A"
                 if self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]):
                     #del val["update_quantity_name"]
+                    p = self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]).quantity
+                    val['quantity'] = val.get('quantity') + p
                     val['update_tag'] = 'write'#self.write_to_mi(val)
                 else:
                     val['update_tag'] = 'create'
@@ -142,16 +144,19 @@ class update_quantity(models.Model):
   
     @api.model
     def create_to_mi(self, vals_list):
+        
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
         
         x = vals_list.get('product_id')
-     
+        
         sn = vals_list.get('serial_number')
         mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
-        
-        return mi.write(vals_list)
+        mi.write(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
+        return 
     
     def write(self,vals_list):
         res = super(update_quantity, self).write(vals_list)
