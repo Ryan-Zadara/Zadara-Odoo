@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from odoo.exceptions import ValidationError , UserError
 
 class product_history(models.Model):
     _name = 'zadara_inventory.product_history'
@@ -29,7 +30,7 @@ class product_history(models.Model):
         #    del vals_list['quantity']
         if vals_list.get('serial_number'):
             del vals_list['serial_number']
-  
+        #raise UserError("asdkjf;a")
         mi = mi.id
         date__ = datetime.now()
         vals_list.update({'date_':date__})

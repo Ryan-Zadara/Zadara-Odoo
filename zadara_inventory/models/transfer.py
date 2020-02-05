@@ -149,12 +149,13 @@ class transfer(models.Model):
                 
             del vals['transfer_source_quant']
             del vals['transfer_source_flag']
-            del vals['source_location_id']
+            
             if vals.get('transfer_tag') == 'write':
                 del vals['transfer_tag'] 
                 
                 self.write_to_mi(vals)
             else:
+                del vals['source_location_id']
                 del vals['transfer_tag']
                 self.create_to_mi(vals)
         return res
@@ -166,9 +167,10 @@ class transfer(models.Model):
     def write_to_mi(self, vals_list):
         x = vals_list.get('product_id')
         sn = vals_list.get('serial_number')
-     
-        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
-  
+        
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('source_location_id')]])
+        del vals_list['source_location_id']
+       # raise UserError(mi.id)
         return mi.write(vals_list)
     
 

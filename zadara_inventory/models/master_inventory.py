@@ -56,25 +56,24 @@ class master_inventory(models.Model):
         return rset                 
     
     def return_tq(self,p_id):
-       
-        tot = 0
-       # raise UserError(self)
-        for x in self: 
-            
+       tot = 0
+       for x in self: 
             if x.product_id.id == p_id:
-                #raise UserError(p_id)
+                #raise UserError(p_id)         
                 tot = tot + x.quantity 
                 
                
-        return tot
+     #   return tot
                          
     def write(self,vals_list):
-        
+        #raise UserError(vals_list.get('location_id'))
         res = super(master_inventory, self).write(vals_list)
        # x = self.
+        
         vals_list.update({'mi_id':self.id})
         self.env['zadara_inventory.product_history'].create(vals_list)
        # self.env['zadara_inventory.product'].search(['id','=',vals_list.get('product_id')]).compute_quantity()
+       # raise UserError(vals_list.get('location_id'))
         return res
         
         

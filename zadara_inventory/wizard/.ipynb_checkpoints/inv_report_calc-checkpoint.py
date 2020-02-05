@@ -37,7 +37,7 @@ class inv_report_calc(models.TransientModel):
         for x in all:
             unt = self.env['zadara_inventory.master_inventory'].search([])
             count = unt.return_tq(x.mi_product_id.id)
-            #raise UserError(count)
+           # raise UserError(count)
             
             x.total_quantity = count
         
