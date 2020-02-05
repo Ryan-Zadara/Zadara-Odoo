@@ -11,7 +11,7 @@ class product(models.Model):
     name = fields.Char(default=lambda self: self.product_name)
     product_name = fields.Char(required=True)
     #product_id = fields.Char()
-    part_number = fields.Char(required=True)
+    part_number = fields.Char()
     product_category = fields.Char()
     
     mi_product = fields.One2many('zadara_inventory.master_inventory', 'product_id')
