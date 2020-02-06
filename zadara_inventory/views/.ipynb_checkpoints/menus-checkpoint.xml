@@ -6,11 +6,11 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root"/>
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root" groups="zadara_inventory.group_user" />
 
     <!-- menu categories -->
 
-    <menuitem name="Master Inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root"  action="zadara_inventory_master_inventory"/>
+    <menuitem name="Master Inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root"  action="zadara_inventory_master_inventory" />
     
       <menuitem name="Products" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"  action='productqview_action_server'/>P
       

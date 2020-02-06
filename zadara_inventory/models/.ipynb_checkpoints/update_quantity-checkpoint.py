@@ -22,7 +22,7 @@ class update_quantity(models.Model):
     
     quantity = fields.Integer()
     
-    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')])
+    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')])
     
     update_date = fields.Datetime(default=datetime.now())
     #def date_set(self):

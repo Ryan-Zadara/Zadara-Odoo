@@ -9,7 +9,8 @@ class master_inventory(models.Model):
    # name = fields.Char()
     
     
-    
+   
+
     
     product_id = fields.Many2one('zadara_inventory.product')
     
@@ -22,8 +23,7 @@ class master_inventory(models.Model):
     #product_ids = inv_product.ids
     
  
-        
-    
+
 
     #def check_invforsn(self,pid,sn):
      #   for i in self:

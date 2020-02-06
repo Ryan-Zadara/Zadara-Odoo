@@ -1,13 +1,31 @@
 <odoo>
   <data>
-   <record id="User" model="res.groups">
-      <field name="name">User</field>
+      
+<record model="ir.module.category" id="module_management">
+  <field name="name">Zadara Inventory Access</field>
+  <field name="description">User access level for this module</field>
+  <field name="sequence">3</field>
 </record>
-<record id="dumbo" model="res.groups">
-      <field name="name">dumbo</field>
-</record>
-    <record id="manager" model="res.groups">
-      <field name="name">manager</field>
-</record>
+      
+         <record id="group_user" model="res.groups">
+     <field name="name">User</field>
+     <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+     <field name="users" eval="[(4, ref('base.user_root'))]"/>
+     <field name="category_id" ref="zadara_inventory.module_management"/>
+    </record>
+
+    <record id="group_manager" model="res.groups">
+      <field name="name">Manager</field>
+      <field name="implied_ids" eval="[(4, ref('zadara_inventory.group_user'))]"/>
+      <field name="category_id" ref="zadara_inventory.module_management"/>
+    </record>
+      
+      
+
+
+      
+
   </data>
 </odoo>
+
+ 

@@ -29,7 +29,7 @@ class transfer(models.Model):
     
     quantity = fields.Integer(required=True)
     
-    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')], required=True)
+    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')], required=True)
     
     transfer_date = fields.Datetime(default=datetime.now())
     
@@ -149,7 +149,7 @@ class transfer(models.Model):
                 del source_vals['transfer_source_flag']
                 del source_vals['transfer_tag']
                 del source_vals['destination_location_id']
-               
+                #raise UserError(source_vals.get('quantity'))
                 self.write_to_mitwo(source_vals)
                 
               
