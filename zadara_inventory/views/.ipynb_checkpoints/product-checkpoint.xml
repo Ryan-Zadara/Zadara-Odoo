@@ -1,21 +1,7 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
- name = fields.Char(default=lambda self: self.product_name)
-    product_name = fields.Char()
-    #product_id = fields.Char()
-    part_number = fields.Char()
-    product_category = fields.Char()
-    
-    mi_product = fields.One2many('zadara_inventory.master_inventory', 'product_id')
-    
-    
-    total_quantity = fields.Integer()
-    #product_grab = fields.Char() #must be product
-    
-    product_trackSerialNumber = fields.Boolean()
-    
-    location_id = fields.Many2one('zadara_inventory.locations')
+
     <record model="ir.ui.view" id="product_list">
       <field name="name">product list</field>
       <field name="model">zadara_inventory.product</field>

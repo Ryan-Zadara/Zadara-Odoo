@@ -3,8 +3,11 @@
    <record id="User" model="res.groups">
       <field name="name">User</field>
 </record>
-    <record id="Administrator" model="res.groups">
-      <field name="name">Administrator</field>
+<record id="dumbo" model="res.groups">
+      <field name="name">dumbo</field>
+</record>
+    <record id="manager" model="res.groups">
+      <field name="name">manager</field>
 </record>
   </data>
 </odoo>
