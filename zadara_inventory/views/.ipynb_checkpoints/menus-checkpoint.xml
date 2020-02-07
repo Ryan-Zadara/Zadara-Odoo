@@ -21,7 +21,7 @@
             <menuitem name="Locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root" action="zadara_inventory_locations"/>
 
     <menuitem name="Moves" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root" action="zadara_inventory_moves"/>
-         <menuitem name="History" id="zadara_inventory.menu_5" parent="zadara_inventory.menu_root" />
+         <menuitem name="History" id="zadara_inventory.menu_5" parent="zadara_inventory.menu_root" groups="zadara_inventory.group_manager" />
 
     <!-- actions -->
 
@@ -30,10 +30,10 @@
           <menuitem name="Transfers" id="zadara_inventory.menu_1_2" parent="zadara_inventory.menu_4"
               action="transfer_action_window"/>
   
-    <menuitem name="List" id="zadara_inventory.menu_5_1" parent="zadara_inventory.menu_5"
-              action="zadara_inventory_product_history"/>
+    <menuitem name="Move History" id="zadara_inventory.menu_5_1" parent="zadara_inventory.menu_5"
+              action="zadara_inventory_product_history" groups="zadara_inventory.group_manager"/>
           
-      <menuitem name="transfers" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
-              action="launch_session_wizard"/>    
+      <menuitem name="Inventory Report" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
+              action="launch_session_w" groups="zadara_inventory.group_manager"/>    
   </data>
 </odoo>
