@@ -29,6 +29,8 @@ class transfer(models.Model):
     
     quantity = fields.Integer(required=True)
     
+    t_quantity = fields.Integer()
+    
     responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')], required=True)
     
     transfer_date = fields.Datetime(default=datetime.now())
@@ -61,6 +63,7 @@ class transfer(models.Model):
     @api.model_create_multi
     def create(self,vals_list):
         for val in vals_list:
+            val['t_quantity'] = val.get('quantity')
             val['transfer_source_flag'] = "no"
             val['transfer_source_quant'] = 0
             #if val.get('quantity') < 0:
@@ -121,19 +124,23 @@ class transfer(models.Model):
                     val['quantity'] = other_quantity + val.get('quantity') 
                     val['location_id'] = val['destination_location_id']
                     val['transfer_tag'] = 'write'
-                
             
             
             
+        
             
         res = super(transfer, self).create(vals_list)
         for vals in vals_list:
+           # if self.env['zadara_inventory.product'].search([['id','=',vals.get("product_id")],['product_trackSerialNumber','=',True]]) and vals['transfer_tag'] == 'write':
+              #  other_quantity = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', vals.get('product_id')],['location_id','=',vals.get('destination_location_id')]]).quantity
+              #  vals['quantity'] = other_quantity + vals.get('quantity') 
+              #  vals['location_id'] = vals['destination_location_id']
             #del vals['transfer_name']
           
                 #vals['location_id'] = vals['destination_location_id']
             del vals['move_info']
           
-           
+            del vals['t_quantity']
             del vals['transfer_date']
             del vals['responsible_party']
             del vals['transfer_type'] 

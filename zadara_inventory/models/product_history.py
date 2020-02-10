@@ -21,6 +21,32 @@ class product_history(models.Model):
     quantity = fields.Integer()
     date_ = fields.Datetime(default=datetime.now())
     
+    def ph_return_tq(self,p_id):
+        tot = 0
+        for x in self: 
+            if x.product_id.id == p_id:
+                #raise UserError(p_id)         
+                tot = tot + x.quantity 
+        return tot
+    
+    def ph_return_tq_wl(self,p_id,l_id):
+        tot = 0
+        
+        for x in self: 
+            #raise UserError(l_id)
+            if x.product_id.id == p_id and x.location_id == l_id:
+                       
+                tot = tot + x.quantity 
+                
+        return tot
+    
+    
+    
+    
+    
+    
+    
+    
     def recurcreate(self,vals_list):
          #for x in self:
         self.create(vals_list)

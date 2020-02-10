@@ -62,6 +62,17 @@ class master_inventory(models.Model):
                 #raise UserError(p_id)         
                 tot = tot + x.quantity 
         return tot
+    
+    def return_tq_wl(self,p_id,l_id):
+        tot = 0
+        
+        for x in self: 
+            #raise UserError(l_id)
+            if x.product_id.id == p_id and x.location_id == l_id:
+                       
+                tot = tot + x.quantity 
+                
+        return tot
                          
     def write(self,vals_list):
         x = self

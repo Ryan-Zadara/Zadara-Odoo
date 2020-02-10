@@ -10,12 +10,13 @@
           
           <field name="location_id"/>
           <field name="product_name"/>
-        <field name="serial_number"/>
-             <field name="quantity"/>
+            <field name="update_date" string="date"/>
+            <field name="serial_number"/>
+             <field name="t_quantity" string="Quantity"/>
         </tree>
       </field>
     </record>
-    
+    <!--
       <record id="update_quantity_filter" model="ir.ui.view">
           <field name="name">search</field>
         <field name="model">zadara_inventory.update_quantity</field>
@@ -28,13 +29,13 @@
             </search>
         </field>
     </record>
-
+-->
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="update_quantity_action_window">
       <field name="name">update qunatity window</field>
       <field name="res_model">zadara_inventory.update_quantity</field>
-      <field name="view_mode">tree,search,form</field>
+      <field name="view_mode">tree,form</field>
     </record>
 
 

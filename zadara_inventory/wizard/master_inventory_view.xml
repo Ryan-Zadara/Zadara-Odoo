@@ -8,7 +8,7 @@
                 <group>
               
                     <field name="location_id"/>
-    
+                   
                 </group>
                 <footer>
                     <button name="calc_qmi" string="Confirm" type="object" class="btn-primary"/>
@@ -20,7 +20,7 @@
     
        <act_window id="launch_session_w"
                     name="import"
-                   binding_model = 'zadara_inventory.master_inventory'
+                   binding_model = 'zadara_inventory.product'
                     res_model="zadara_inventory.master_inventory_view"
                     view_mode="form"
                     target="new"/>

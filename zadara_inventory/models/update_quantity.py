@@ -29,6 +29,7 @@ class update_quantity(models.Model):
      #   return datetime.now()
     update_tag = fields.Char(readonly=True)
     
+    t_quantity = fields.Integer(readonly=True)
     #@api.depends('update_date')
     #def comp_qn(self):
     #    if self.update_date == False:
@@ -78,6 +79,7 @@ class update_quantity(models.Model):
        # for x in vals_list:
          #   x['update_quantity_name'] = uqn_val
         for val in vals_list:
+            val['t_quantity'] = val.get('quantity')
             if not val.get('product_id'):
                 raise UserError("no product")
             if val.get('reponsible_party') == '':
@@ -123,7 +125,8 @@ class update_quantity(models.Model):
           
         res = super(update_quantity, self).create(vals_list)
         for vals in vals_list:
-            
+            if vals.get('t_quantity'):
+                del vals["t_quantity"]
             if vals.get('update_quantity_name'):
                 del vals["update_quantity_name"]
             if vals.get('responsible_party'):

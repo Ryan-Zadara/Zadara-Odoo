@@ -14,13 +14,40 @@
           <field name="location_id"/>
             <field name="move_info"/>        
           <field name="product_name"/>
+            <field name="transfer_date"/>
         <field name="serial_number"/>
-             <field name="quantity"/>
+             <field name="t_quantity" string="Quantity"/>
         </tree>
       </field>
     </record>
 
 
+          <record model="ir.ui.view" id="transfer_form_list">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.transfer</field>
+      <field name="arch" type="xml">
+        <form>
+          <field name="transfer_name"/>
+            <group>
+                     <field name="source_location_id" string="Source Location"/>
+                     <field name="destination_location_id" string="Destination Location"/>
+            </group>
+          
+            <field name="location_id" invisible='1'/>
+            <group>        
+          <field name="product_id" string="Product Name"/>
+        <field name="serial_number" string="Serial Number"/>
+             <field name="quantity" string="Quantity"/>
+            </group>
+            <group>
+                <field name="responsible_party" string="responsible_party"/>
+                   <field name="transfer_type" string="Transfer Type"/>
+            <field name="move_info" string="Move Info"/>
+            <field name="transfer_date" string="Date of Transfer"/>
+            </group>
+        </form>
+      </field>
+    </record>
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="transfer_action_window">
