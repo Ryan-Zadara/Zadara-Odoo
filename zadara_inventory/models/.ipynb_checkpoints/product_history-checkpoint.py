@@ -20,6 +20,13 @@ class product_history(models.Model):
     location_id  = fields.Many2one('zadara_inventory.locations')
     quantity = fields.Integer()
     date_ = fields.Datetime(default=datetime.now())
+    t_quantity = fields.Integer()
+    
+    def if_date(self,date,test_date):
+        if date <= test_date:
+            return True 
+        else:
+            return False 
     
     def ph_return_tq(self,p_id):
         tot = 0
@@ -34,7 +41,7 @@ class product_history(models.Model):
         
         for x in self: 
             #raise UserError(l_id)
-            if x.product_id.id == p_id and x.location_id == l_id:
+            if x.product_id.id == p_id and x.location_id.id == l_id:
                        
                 tot = tot + x.quantity 
                 

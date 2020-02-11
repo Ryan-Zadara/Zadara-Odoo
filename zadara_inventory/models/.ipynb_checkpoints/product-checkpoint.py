@@ -16,6 +16,7 @@ class product(models.Model):
     
     mi_product = fields.One2many('zadara_inventory.master_inventory', 'product_id')
     
+    locat_loc_id = fields.Char()
     
     total_quantity = fields.Integer()
     #product_grab = fields.Char() #must be product
@@ -52,6 +53,7 @@ class product(models.Model):
     
     def compute_quantity(self):
         for x in self:
+            x.locat_loc_id = ''
             unt = self.env['zadara_inventory.master_inventory'].search([])
             count = unt.return_tq(x.id)
             #raise UserError(unt)

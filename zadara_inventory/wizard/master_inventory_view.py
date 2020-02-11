@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models, _
+from odoo import fields, models, api, _
 from datetime import datetime
+
 from odoo.exceptions import ValidationError , UserError
 
 
@@ -9,30 +10,60 @@ class master_inventory_view(models.TransientModel):
     _name = 'zadara_inventory.master_inventory_view'
     _description = 'Stock Quantity History'
     
-   # at_date = fields.Date(default=datetime.now())
-   
     location_id = fields.Many2one('zadara_inventory.locations')
+ 
+    at_date = fields.Date(default=datetime.now())
+   
+   
     
-   # add_serial_number = fields.Boolean()
-        
-    def calc_qmi(self): 
-        # for_search  = self.env['zadara_inventory.product_history'].search([])
-        #if self.locations == None:
-            #location_id = self.env['zadara_inventory.product_history'].get.context('product_history')
-      #  mi_x = self.env['zadara_inventory.master_inventory'].search([])
-        products = self.env['zadara_inventory.product'].search([])
-       
+    bool_at_date = fields.Date(default=datetime.now())
     
-        
-        
-        mi_t = self.env['zadara_inventory.master_inventory'].search([])
-        if self.location_id:
-            for p in products: 
-                p.total_quantity = mi_t.return_tq_wl(p.id,self.location_id)
-        else:
-            for p in products: 
-                p.total_quantity = mi_t.return_tq(p.id)
+   # @api.onchange('at_date')
+    #def chng_b(self):
+     #   if self.at_date == :
+      #      self.bool_at_date = True
        # else:
+           # raise UserError(datetime.today())
+        #    self.bool_at_date = False
+    def calc_qmi(self): 
+        mi_t = self.env['zadara_inventory.master_inventory'].search([])
+        products = self.env['zadara_inventory.product'].search([])
+        
+        start_date = self.at_date.strftime('%Y-%m-%d')
+        end_date = self.bool_at_date.strftime('%Y-%m-%d')
+        
+        if start_date == end_date:
+        
+            
+            
+
+
+            
+            if self.location_id:
+                for p in products: 
+                    p.total_quantity = mi_t.return_tq_wl(p.id,self.location_id)
+                    p.locat_loc_id = self.location_id.name
+            else:
+                for p in products: 
+                    p.total_quantity = mi_t.return_tq(p.id)
+        else:
+            all = self.env['zadara_inventory.product_history'].browse([])
+            if not self.location_id:
+                for x in mi_t:
+                    updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.at_date],['product_id.id','=',x.product_id.id],['location_id','=',x.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
+
+                    all = all | updates
+            else:
+                for x in mi_t:
+                    updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.at_date],['product_id.id','=',x.product_id.id],['location_id.id','=',self.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
+                
+                    all = all | updates
+                #raise UserError(all)
+
+            for p in products: 
+                p.total_quantity = all.ph_return_tq(p.id)
+                p.locat_loc_id = self.location_id.name
+    # else:
         #    mi_t = self.env['zadara_inventory.product_history'].search(['date_','<=', self.at_date],order="date_ desc", limit=1)
          #   if self.location_id:
           #      for p in products: 

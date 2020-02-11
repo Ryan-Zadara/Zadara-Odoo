@@ -30,6 +30,7 @@ class update_quantity(models.Model):
     update_tag = fields.Char(readonly=True)
     
     t_quantity = fields.Integer(readonly=True)
+    #moveline = fields.Many2many('zadara_inventory.mlqu')
     #@api.depends('update_date')
     #def comp_qn(self):
     #    if self.update_date == False:

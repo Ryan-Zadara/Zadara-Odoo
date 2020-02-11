@@ -27,23 +27,31 @@
       <field name="model">zadara_inventory.transfer</field>
       <field name="arch" type="xml">
         <form>
-          <field name="transfer_name"/>
-            <group>
-                     <field name="source_location_id" string="Source Location"/>
-                     <field name="destination_location_id" string="Destination Location"/>
+            <group colspan='2'>
+          <field name="transfer_name" invisible='1'/>
+            <group colspan='1' col='1'>
+                <field name="product_id" string="Product Name"/>
+                <field name="source_location_id" string="Source Location"/>
+                <field name="destination_location_id" string="Destination Location"/>
             </group>
           
             <field name="location_id" invisible='1'/>
-            <group>        
-          <field name="product_id" string="Product Name"/>
+            <group colspan='1' col='1'>        
+          
         <field name="serial_number" string="Serial Number"/>
              <field name="quantity" string="Quantity"/>
-            </group>
-            <group>
-                <field name="responsible_party" string="responsible_party"/>
-                   <field name="transfer_type" string="Transfer Type"/>
-            <field name="move_info" string="Move Info"/>
             <field name="transfer_date" string="Date of Transfer"/>
+            </group>
+            <group colspan='1' col='2'>
+                <field name="responsible_party" string="Responsible Party"/>
+                 </group>
+                  <group colspan='1' col='2'>
+                   <field name="transfer_type" string="Transfer Type"/>
+                       </group>
+                <group colspan='2' col='2'>
+            <field name="move_info" string="Move Info"/>
+            
+            </group>
             </group>
         </form>
       </field>

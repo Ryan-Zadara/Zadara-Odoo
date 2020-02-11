@@ -12,7 +12,7 @@ class inv_report_calc(models.TransientModel):
     inv_at_date = fields.Datetime(default = datetime.now())
     
    
-    location_id = fields.Many2one('zadara_inventory.locations')
+    #by_location = fields.Boolean()
     
     add_serial_number = fields.Boolean()
         
@@ -24,54 +24,71 @@ class inv_report_calc(models.TransientModel):
         all = self.env['zadara_inventory.product_history']
        # for_search  = self.env['zadara_inventory.product_history'].search([])
         mi_t = self.env['zadara_inventory.master_inventory'].search([])
-        if not self.location_id and self.add_serial_number == True:
-            for x in mi_t:
-                for t in self.env['zadara_inventory.locations'].search([]):
-                    updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['product_id','=',x.product_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
-                    if updates:
-                        all = all | updates 
-        
-            unt = self.env['zadara_inventory.master_inventory'].search([])
-            count = unt.return_tq(x.product_id.id)
-           # raise UserError(count)
+        mi_ph =  self.env['zadara_inventory.product_history'].search([])
+        temp = self.env['zadara_inventory.product_history']#.search((['date_','<=', self.inv_at_date]), order='date_desc')
+       
+        for x in mi_ph:
+            if x.if_date(x.date_,self.inv_at_date):
+                temp = temp | x
+        for x in temp:
+            temp2 = temp.search((['product_id.id','=',x.product_id.id],['serial_number','=',x.serial_number],['location_id.id','=',x.location_id.id]))
+            l = x
+            for t in temp2: 
+                if t.date_ > x.date_:
+                    l = t
+            all = all | l
+            temp = temp - temp2
+            #updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['product_id.id','=',x.product_id.id],['location_id.id','=',x.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc")
+                
+        #raise UserError(all)        
+                 
+            #temp = temp | updates
+                
+       # for x in all: 
             
-            x.total_quantity = count
+            
+        
+           #raise UserError(all)
+        
+        
+        
+       # elif not self.by_location:
+       #     for x in mi_t:
+       #         updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.product_id.id],['mi_id.serial_number','=',x.serial_number],['location_id','=',x.location_id.id]),order="date_ asc", limit=1)
+                #updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.id],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
+                
+        #        all = updates | all 
         
 
-        
-        elif self.location_id and self.add_serial_number == True:
-            for x in mi_t:
-                updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.product_id.id],['mi_id.serial_number','=',x.serial_number],['location_id','=',self.location_id.id]),order="date_ desc", limit=1)
-                #updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.inv_at_date],['mi_id.product_id','=',x.id],['location_id','=',self.location_id.id]),order="date_ asc", limit=1)
-                all = updates | all 
-        
-            unt = self.env['zadara_inventory.master_inventory'].search([])
-            count = unt.return_tq_wl(x.product_id.id,self.location_id)
-            x.total_quantity = count
- 
+                 
+                
+                
+
        
-        
-        
-        #elif not self.location_id and self.add_serial_number == False:
+        unt = all
+        #if self.by_location:
+        for x in all:     
             
-        #for x in all:
-           # if not self.location_id:
-              #  unt = self.env['zadara_inventory.master_inventory'].search([])
-             #   count = unt.return_tq(x.product_id.id)
-           # raise UserError(count)
+            count = unt.ph_return_tq_wl(x.product_id.id,x.location_id.id)
+            #raise UserError(count)
             
-            #    x.total_quantity = count
-           # else:
-          #       count = unt.return_tq_wl(x.product_id.id,self.location_id)
-        #        x.total_quantity = count
-        if not self.add_serial_number:
-            cop = self.env['zadara_inventory.product_history']
-            for x in all:
-                if not x.product_id in cop.product_id:
-                    cop = cop | x
-            all = cop
-        
- 
+            x.t_quantity = count
+        #else:
+        #    for x in all: 
+        #        count = unt.ph_return_tq(x.product_id.id)
+                #raise UserError(count)
+            
+        #        x.t_quantity = count
+        #raise UserError(all.search['id','=',1])
+
+       # if not self.add_serial_number:
+       #     cop = self.env['zadara_inventory.product_history'].browse([])
+       #     for x in all:
+               
+       #         cop = cop | all.search((['product_id.id','=',x.product_id.id],['location_id.id','=',x.location_id.id]), limit=1)
+       #     all = cop
+       
+     
 
         action = {
             'type': 'ir.actions.act_window',

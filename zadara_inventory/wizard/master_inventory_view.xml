@@ -6,9 +6,10 @@
         <field name="arch" type="xml">
             <form string="inv reprot">
                 <group>
-              
                     <field name="location_id"/>
-                   
+               <field name="at_date"/>
+                  
+                   <field name="bool_at_date"/>
                 </group>
                 <footer>
                     <button name="calc_qmi" string="Confirm" type="object" class="btn-primary"/>

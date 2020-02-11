@@ -14,8 +14,8 @@
            <field name="serial_number"/>
            <field name="date_"/>
            <field name="location_id"/>
-           <field name="quantity"/>
-            <field name="total_quantity"/>
+           <field name="quantity" />
+            <field name="t_quantity" string="Total Quantity" />
         <!--
            <button name="launch_session_wizard" type="object"
                 string="Subscribe"/>
