@@ -24,17 +24,19 @@
 
     # always loaded
     'data': [
+       
         'security/security.xml',
         'security/ir.model.access.csv',
-        
+        'wizard/master_inventory_view.xml',
         'views/views.xml',
         'views/location.xml',
         'views/master_inventory.xml',
         'views/moves.xml',
         'views/product.xml',
-       'views/product.xml',
+        'views/product.xml',
         'views/product_history.xml',
         'wizard/inv_report_calc.xml',
+      
         'views/update_quantity.xml',
         'views/transfer.xml',
         'views/menus.xml',

@@ -8,7 +8,7 @@ class update_quantity(models.Model):
     _name = 'zadara_inventory.update_quantity'
     _description = 'zadara_inventory.upadate_quantity'
 
-    update_quantity_name = fields.Char(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
+    #update_quantity_name = fields.Char(compute="comp_qn",store=True, default=lambda self: self.env['zadara_inventory.update_quantity'].comp_qn())
     
     location_id = fields.Many2one('zadara_inventory.locations')
     
@@ -22,20 +22,22 @@ class update_quantity(models.Model):
     
     quantity = fields.Integer()
     
-    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')])
+    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')])
     
     update_date = fields.Datetime(default=datetime.now())
     #def date_set(self):
      #   return datetime.now()
     update_tag = fields.Char(readonly=True)
     
-    @api.depends('update_date')
-    def comp_qn(self):
-        if self.update_date == False:
+    t_quantity = fields.Integer(readonly=True)
+    #moveline = fields.Many2many('zadara_inventory.mlqu')
+    #@api.depends('update_date')
+    #def comp_qn(self):
+    #    if self.update_date == False:
             #self.date_set()
-            raise UserError(self.update_date)
-        r = self.update_date.to_string()
-        return r
+    #        raise UserError(self.update_date)
+    #    r = self.update_date.to_string()
+    #    return r
         #x = self.env['zadara_inventory.update_quantity'].search([],order="update_quantity_name desc", limit=1)
         #self.update_quantity_name = x.update_quantity_name
         #raise UserError(datetime.now()-)
@@ -78,6 +80,7 @@ class update_quantity(models.Model):
        # for x in vals_list:
          #   x['update_quantity_name'] = uqn_val
         for val in vals_list:
+            val['t_quantity'] = val.get('quantity')
             if not val.get('product_id'):
                 raise UserError("no product")
             if val.get('reponsible_party') == '':
@@ -92,7 +95,7 @@ class update_quantity(models.Model):
                 raise UserError("no location")
             if track:
                 if val.get('quantity') < 0 or val.get('quantity') > 1:
-                    raise UserError("bad qunatity")
+                    raise UserError("bad quantity")
                 if not val.get('serial_number'):
                     raise UserError('bad sn line')
                 if val.get('serial_number') == 'N/A':
@@ -111,6 +114,8 @@ class update_quantity(models.Model):
                 val['serial_number'] = "N/A"
                 if self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]):
                     #del val["update_quantity_name"]
+                    p = self.env['zadara_inventory.master_inventory'].search([['location_id','=', val.get('location_id')],['product_id', '=',val.get('product_id')]]).quantity
+                    val['quantity'] = val.get('quantity') + p
                     val['update_tag'] = 'write'#self.write_to_mi(val)
                 else:
                     val['update_tag'] = 'create'
@@ -121,7 +126,8 @@ class update_quantity(models.Model):
           
         res = super(update_quantity, self).create(vals_list)
         for vals in vals_list:
-            
+            if vals.get('t_quantity'):
+                del vals["t_quantity"]
             if vals.get('update_quantity_name'):
                 del vals["update_quantity_name"]
             if vals.get('responsible_party'):
@@ -142,16 +148,19 @@ class update_quantity(models.Model):
   
     @api.model
     def create_to_mi(self, vals_list):
+        
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
         
         x = vals_list.get('product_id')
-     
+        
         sn = vals_list.get('serial_number')
         mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
-        
-        return mi.write(vals_list)
+        mi.write(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
+        return 
     
     def write(self,vals_list):
         res = super(update_quantity, self).write(vals_list)

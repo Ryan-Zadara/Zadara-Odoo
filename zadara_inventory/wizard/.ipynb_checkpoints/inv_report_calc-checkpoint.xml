@@ -6,12 +6,13 @@
         <field name="arch" type="xml">
             <form string="Choose your date">
                 <group>
+                    <field name='by_product'/>
                     <field name="inv_at_date"/>
-                    <field name="location_id"/>
+                    
                 </group>
                 <footer>
                     <button name="calc_at_date" string="Confirm" type="object" class="btn-primary"/>
-   
+           
                 </footer>
             </form>
         </field>

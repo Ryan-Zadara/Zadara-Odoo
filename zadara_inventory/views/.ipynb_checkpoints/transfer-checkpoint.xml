@@ -2,23 +2,7 @@
   <data>
     <!-- explicit list view definition -->
 
-        transfer_name = fields.Char()
-    
-    transfer_type = fields.Char()
-    
-    source_location_id = fields.Many2one('zadara_inventory.locations')
-    
-    destination_location_id = fields.Many2one('zadara_inventory.locations')
-    
-    location_id  = fields.Many2one('zadara_inventory.locations', readonly=True)
-   
-    product_id = fields.Many2one('zadara_inventory.product')
-    
-    product_name = fields.Char(related="product_id.product_name")
-    
-    serial_number = fields.Char()
-    
-    quantity = fields.Integer()
+
     <record model="ir.ui.view" id="transfer_list">
       <field name="name">product list</field>
       <field name="model">zadara_inventory.transfer</field>
@@ -28,15 +12,50 @@
                      <field name="source_location_id"/>
                      <field name="destination_location_id"/>
           <field name="location_id"/>
-                   
+            <field name="move_info"/>        
           <field name="product_name"/>
+            <field name="transfer_date"/>
         <field name="serial_number"/>
-             <field name="quantity"/>
+             <field name="t_quantity" string="Quantity"/>
         </tree>
       </field>
     </record>
 
 
+          <record model="ir.ui.view" id="transfer_form_list">
+      <field name="name">product list</field>
+      <field name="model">zadara_inventory.transfer</field>
+      <field name="arch" type="xml">
+        <form>
+            <group colspan='2'>
+          <field name="transfer_name" invisible='1'/>
+            <group colspan='1' col='1'>
+                <field name="product_id" string="Product Name"/>
+                <field name="source_location_id" string="Source Location"/>
+                <field name="destination_location_id" string="Destination Location"/>
+            </group>
+          
+            <field name="location_id" invisible='1'/>
+            <group colspan='1' col='1'>        
+          
+        <field name="serial_number" string="Serial Number"/>
+             <field name="quantity" string="Quantity"/>
+            <field name="transfer_date" string="Date of Transfer"/>
+            </group>
+            <group colspan='1' col='2'>
+                <field name="responsible_party" string="Responsible Party"/>
+                 </group>
+                  <group colspan='1' col='2'>
+                   <field name="transfer_type" string="Transfer Type"/>
+                       </group>
+                <group colspan='2' col='2'>
+            <field name="move_info" string="Move Info"/>
+            
+            </group>
+            </group>
+        </form>
+      </field>
+    </record>
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="transfer_action_window">

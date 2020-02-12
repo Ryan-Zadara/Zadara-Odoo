@@ -12,4 +12,4 @@ class info(models.Model):
     
     mi_id = fields.Many2one('zadara_inventory.master_inventory')
     
-    product_
+    

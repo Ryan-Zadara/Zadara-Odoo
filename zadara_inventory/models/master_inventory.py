@@ -9,7 +9,8 @@ class master_inventory(models.Model):
    # name = fields.Char()
     
     
-    
+   
+
     
     product_id = fields.Many2one('zadara_inventory.product')
     
@@ -22,9 +23,8 @@ class master_inventory(models.Model):
     #product_ids = inv_product.ids
     
  
-        
+    report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
     
-
     #def check_invforsn(self,pid,sn):
      #   for i in self:
     #        if i.product_id == pid:
@@ -43,7 +43,7 @@ class master_inventory(models.Model):
     def create(self,vals_list):
   
         res = super(master_inventory, self).create(vals_list)
-        vals_list.update({'mi_id':self.id})
+        
         #self.env['zadara_inventory.product_history'].create(vals_list)
         
         #f = self.env['zadara_inventory.product']
@@ -56,25 +56,36 @@ class master_inventory(models.Model):
         return rset                 
     
     def return_tq(self,p_id):
-       
         tot = 0
-       # raise UserError(self)
         for x in self: 
-            
             if x.product_id.id == p_id:
-                #raise UserError(p_id)
+                #raise UserError(p_id)         
+                tot = tot + x.quantity 
+        return tot
+    
+    def return_tq_wl(self,p_id,l_id):
+        tot = 0
+        
+        for x in self: 
+            #raise UserError(l_id)   
+            if x.product_id.id == p_id and x.location_id.id == l_id:
+                    
                 tot = tot + x.quantity 
                 
-               
         return tot
                          
     def write(self,vals_list):
-        
+        x = self
+        #raise UserError(vals_list.get('location_id'))
         res = super(master_inventory, self).write(vals_list)
-       # x = self.
-        vals_list.update({'mi_id':self.id})
-        self.env['zadara_inventory.product_history'].create(vals_list)
+        
+       # if self.env['zadara_inventory.product'].search([['id','=',vals_list.get("product_id")],['product_trackSerialNumber','=',True]]):
+        #    self.write({'location_id.id': vals_list.get('location_id')})
+
+        #x.env['zadara_inventory.product_history'].create(vals_list)
        # self.env['zadara_inventory.product'].search(['id','=',vals_list.get('product_id')]).compute_quantity()
+       # raise UserError(self.location_id.id)
+
         return res
         
         

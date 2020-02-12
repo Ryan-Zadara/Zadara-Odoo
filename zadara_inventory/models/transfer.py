@@ -9,8 +9,9 @@ class transfer(models.Model):
     _description = 'zadara_inventory.transfer'
 
     
-    transfer_name = fields.Integer(compute="comp_tn",store=True, default=lambda self: self.env['zadara_inventory.transfer'].comp_tn())
+    transfer_name = fields.Integer()
     
+    move_info = fields.Char(help="Tracking number for transfers, PO number for purchases")
     
     transfer_type = fields.Selection([('Transfer','Transfer'), ('Purchase','Purchase')],required=True)
     
@@ -28,7 +29,9 @@ class transfer(models.Model):
     
     quantity = fields.Integer(required=True)
     
-    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yoknaem','Yoknaem')], required=True)
+    t_quantity = fields.Integer()
+    
+    responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')], required=True)
     
     transfer_date = fields.Datetime(default=datetime.now())
     
@@ -36,18 +39,14 @@ class transfer(models.Model):
 
     transfer_source_flag = fields.Char(readonly=True)
     transfer_source_quant = fields.Integer()
-    def comp_tn(self):
-        x = self.env['zadara_inventory.transfer'].search([],order="transfer_name desc", limit=1)
-        r = x.transfer_name + 1
-        self.tranfser_name = r
-        return r
+
     
     #check valid, location_id, product_id 
 
     
     def check_create_all(self,q):
         if q != 1:
-            raise UserError("bad")
+            raise UserError("bad quantity")
     
     #tests to run object exists 
     #quantity is avalibale 
@@ -60,6 +59,7 @@ class transfer(models.Model):
     @api.model_create_multi
     def create(self,vals_list):
         for val in vals_list:
+            val['t_quantity'] = val.get('quantity')
             val['transfer_source_flag'] = "no"
             val['transfer_source_quant'] = 0
             #if val.get('quantity') < 0:
@@ -85,7 +85,7 @@ class transfer(models.Model):
                     raise UserError('bad sns')
                 
                 if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')],['quantity','=',val.get('quantity')]]) and val.get('quantity') == 1:
-                    val['location_id'] = val['destination_location_id']
+                    val['location_id'] = val.get('destination_location_id')
                     val['transfer_tag'] = 'write'
                     #val['transfer_source_flag'] = 'yes'
                    # sq = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]]).quantity
@@ -93,7 +93,7 @@ class transfer(models.Model):
                    # val['transfer_source_quant'] = 0 
                     #do stuff here
                 else:
-                    raise UserError(val.get('serial_number'))
+                    raise UserError("bad no product found")
             else:
 
                 if val.get('serial_number') != 'N/A':
@@ -117,65 +117,103 @@ class transfer(models.Model):
                     
                 else:
                     other_quantity = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')]]).quantity
-                    val['quantity'] = other_quantity + val['quantity'] 
+                    val['quantity'] = other_quantity + val.get('quantity') 
                     val['location_id'] = val['destination_location_id']
                     val['transfer_tag'] = 'write'
-                
             
             
             
+        
             
         res = super(transfer, self).create(vals_list)
         for vals in vals_list:
+           # if self.env['zadara_inventory.product'].search([['id','=',vals.get("product_id")],['product_trackSerialNumber','=',True]]) and vals['transfer_tag'] == 'write':
+              #  other_quantity = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', vals.get('product_id')],['location_id','=',vals.get('destination_location_id')]]).quantity
+              #  vals['quantity'] = other_quantity + vals.get('quantity') 
+              #  vals['location_id'] = vals['destination_location_id']
             #del vals['transfer_name']
           
                 #vals['location_id'] = vals['destination_location_id']
-           
-            del vals['destination_location_id']
-           
+            del vals['move_info']
+          
+            del vals['t_quantity']
             del vals['transfer_date']
             del vals['responsible_party']
             del vals['transfer_type'] 
             source_vals = copy.deepcopy(vals)
+            del vals['destination_location_id']
             if vals.get("transfer_source_flag") == 'yes':
                 #temp = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['location_id','=',val.get('source_location_id')]])
                 source_vals['location_id'] = source_vals.get('source_location_id')
+                source_vals['source_location_id'] = source_vals.get('destination_location_id')
                 source_vals['quantity'] = source_vals.get('transfer_source_quant')
-                del source_vals['source_location_id']
+               # del source_vals['source_location_id']
                 del source_vals['transfer_source_quant']
                 del source_vals['transfer_source_flag']
                 del source_vals['transfer_tag']
-                self.write_to_mi(source_vals)
+                del source_vals['destination_location_id']
+                #raise UserError(source_vals.get('quantity'))
+                self.write_to_mitwo(source_vals)
                 
+              
             del vals['transfer_source_quant']
             del vals['transfer_source_flag']
-            del vals['source_location_id']
+            
             if vals.get('transfer_tag') == 'write':
-                del vals['transfer_tag'] 
-                
-                self.write_to_mi(vals)
+                del vals['transfer_tag']  
+             
+                if self.env['zadara_inventory.product'].search([['id','=',vals.get("product_id")],['product_trackSerialNumber','=',True]]):
+                    self.write_to_mi(vals)
+                else:
+                    e = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')],['location_id','=',val.get('destination_location_id')]])
+                    self.write_to_mitwo(vals)
             else:
+                del vals['source_location_id']
                 del vals['transfer_tag']
+               
                 self.create_to_mi(vals)
         return res
     
    
     #def set_loc_quant(self):
-        
+    def write_to_mitwo(self, vals_list):
+        x = vals_list.get('product_id')
+        sn = vals_list.get('serial_number')
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
+       
+        #raise UserError(mi.product_id)
+        del vals_list['source_location_id']#if self.env['zadara_inventory.product'].search([['id','=',vals_list.get("product_id")],['product_trackSerialNumber','=',True]]):
+        mi.write(vals_list)
+        self.env['zadara_inventory.product_history'].recurcreate(vals_list)
+        #else:
+          #  mi.search([['product_id.id', '=', x], ['serial_number', '=', sn],['location_id.id','=',vals_list.get('location_id')]])
+          
   
     def write_to_mi(self, vals_list):
         x = vals_list.get('product_id')
         sn = vals_list.get('serial_number')
-     
-        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
-  
-        return mi.write(vals_list)
+        mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('source_location_id')]], limit=1)
+        mi.location_id = vals_list.get('location_id')
+        #raise UserError(mi.product_id)
+        del vals_list['source_location_id']#if self.env['zadara_inventory.product'].search([['id','=',vals_list.get("product_id")],['product_trackSerialNumber','=',True]]):
+        mi.write(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
+        #else:
+          #  mi.search([['product_id.id', '=', x], ['serial_number', '=', sn],['location_id.id','=',vals_list.get('location_id')]])
+        
+        
+       # raise UserError(mi.id)
+        return 
     
 
   
     @api.model
     def create_to_mi(self, vals_list):
-        new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
+        
+        x = self
+        new_addition = x.env['zadara_inventory.master_inventory'].create(vals_list)
+        self.env['zadara_inventory.product_history'].create(vals_list)
+        
     
 
     
