@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="zadara_inventory_inv_report_calc" model="ir.ui.view">
+    <record id="zadara_inventory_q_mi" model="ir.ui.view">
         <field name="name">Inventory Report at Date</field>
-        <field name="model">zadara_inventory.inv_report_calc</field>
+        <field name="model">zadara_inventory.q_mi</field>
         <field name="arch" type="xml">
             <form string="Choose your date">
                 <group>
                     <field name='by_product'/>
-                    <field name="inv_at_date"/>
-                    
+              
                 </group>
                 <footer>
-                    <button name="calc_at_date" string="Confirm" type="object" class="btn-primary"/>
+                    <button name="qmi" string="Confirm" type="object" class="btn-primary"/>
            
                 </footer>
             </form>
         </field>
     </record>
     
-       <act_window id="launch_session_wizard"
+       <act_window id="launch_session_"
                     name="import"
-                   binding_model = 'zadara_inventory.product_history'
-                    res_model="zadara_inventory.inv_report_calc"
+                   binding_model = 'zadara_inventory.master_inventory'
+                    res_model="zadara_inventory.q_mi"
                     view_mode="form"
                     target="new"/>
 

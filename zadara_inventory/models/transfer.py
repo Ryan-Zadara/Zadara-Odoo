@@ -9,7 +9,7 @@ class transfer(models.Model):
     _description = 'zadara_inventory.transfer'
 
     
-    transfer_name = fields.Integer(compute="comp_tn",store=True, default=lambda self: self.env['zadara_inventory.transfer'].comp_tn())
+    transfer_name = fields.Integer()
     
     move_info = fields.Char(help="Tracking number for transfers, PO number for purchases")
     
@@ -39,11 +39,7 @@ class transfer(models.Model):
 
     transfer_source_flag = fields.Char(readonly=True)
     transfer_source_quant = fields.Integer()
-    def comp_tn(self):
-        x = self.env['zadara_inventory.transfer'].search([],order="transfer_name desc", limit=1)
-        r = x.transfer_name + 1
-        self.tranfser_name = r
-        return r
+
     
     #check valid, location_id, product_id 
 

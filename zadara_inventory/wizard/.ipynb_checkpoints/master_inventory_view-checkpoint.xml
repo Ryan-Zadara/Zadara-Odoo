@@ -4,16 +4,15 @@
         <field name="name">Inventory Report at Date</field>
         <field name="model">zadara_inventory.master_inventory_view</field>
         <field name="arch" type="xml">
-            <form string="inv reprot">
+            <form string="Choose your date">
                 <group>
-                    <field name="location_id"/>
-               <field name="at_date"/>
-                  
-                   <field name="bool_at_date"/>
+                    <field name='location_id'/>
+                    <field name="at_date"/>
+                    <field name="bool_at_date" invisible='1'/>
                 </group>
                 <footer>
                     <button name="calc_qmi" string="Confirm" type="object" class="btn-primary"/>
-   
+           
                 </footer>
             </form>
         </field>

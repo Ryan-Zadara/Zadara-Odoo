@@ -95,7 +95,7 @@ class update_quantity(models.Model):
                 raise UserError("no location")
             if track:
                 if val.get('quantity') < 0 or val.get('quantity') > 1:
-                    raise UserError("bad qunatity")
+                    raise UserError("bad quantity")
                 if not val.get('serial_number'):
                     raise UserError('bad sn line')
                 if val.get('serial_number') == 'N/A':

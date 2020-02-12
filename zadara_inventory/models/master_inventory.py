@@ -23,8 +23,8 @@ class master_inventory(models.Model):
     #product_ids = inv_product.ids
     
  
-
-
+    report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
+    
     #def check_invforsn(self,pid,sn):
      #   for i in self:
     #        if i.product_id == pid:
@@ -67,9 +67,9 @@ class master_inventory(models.Model):
         tot = 0
         
         for x in self: 
-            #raise UserError(l_id)
-            if x.product_id.id == p_id and x.location_id == l_id:
-                       
+            #raise UserError(l_id)   
+            if x.product_id.id == p_id and x.location_id.id == l_id:
+                    
                 tot = tot + x.quantity 
                 
         return tot

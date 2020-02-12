@@ -8,7 +8,7 @@ class product(models.Model):
     _name = 'zadara_inventory.product'
     _description = 'zadara_inventory.product'
     
-    name = fields.Char(default=lambda self: self.product_name)
+    name = fields.Char(compute='corr_name',store=True)
     product_name = fields.Char(required=True)
     #product_id = fields.Char()
     part_number = fields.Char()
@@ -24,11 +24,12 @@ class product(models.Model):
     product_trackSerialNumber = fields.Boolean(string="Product Track By Serial Number:")
     
     location_id = fields.Many2one('zadara_inventory.locations')
-    @api.onchange('product_name')
+    @api.depends('product_name','name')
     def corr_name(self):
         self.name = self.product_name
     def get_track(self):
         return self.product_trackSerialNumber
+    
     
     
    # def set_o(self,p_id):

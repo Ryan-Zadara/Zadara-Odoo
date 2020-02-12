@@ -6,40 +6,40 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root" groups="zadara_inventory.group_user" />
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root" groups="zadara_inventory.group_user" sequence='1' />
 
     <!-- menu categories -->
 
-    <menuitem name="Master Inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root" />
-          <menuitem name="Master Inv" id="zadara_inventory.menu_1_1" parent="zadara_inventory.menu_1"  action="zadara_inventory_master_inventory" />
- 
+    <menuitem name="Master Inventory" id="zadara_inventory.menu_1" parent="zadara_inventory.menu_root"  action="zadara_inventory_master_inventory" sequence='10'/>
+       <!--   <menuitem name="Master Inv" id="zadara_inventory.menu_1_1" parent="zadara_inventory.menu_1"  />
+ -->
       
       
-      <menuitem name="Products" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"  action='productqview_action_server'/>P
+      <menuitem name="Products" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"  action='productqview_action_server' sequence='20'/>
       
       
 
 
       
-            <menuitem name="Locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root" action="zadara_inventory_locations"/>
+            <menuitem name="Locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root" action="zadara_inventory_locations" sequence='30'/>
 
-    <menuitem name="Moves" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root" action="zadara_inventory_moves"/>
-         <menuitem name="History" id="zadara_inventory.menu_5" parent="zadara_inventory.menu_root" groups="zadara_inventory.group_manager" />
+    <menuitem name="Moves" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root" action="zadara_inventory_moves" sequence='40'/>
+         <menuitem name="Reports" id="zadara_inventory.menu_5" parent="zadara_inventory.menu_root" groups="zadara_inventory.group_manager" sequence='50' />
 
     <!-- actions -->
 
     <menuitem name="Quantity Add" id="zadara_inventory.menu_4_1" parent="zadara_inventory.menu_4"
-              action="update_quantity_action_window"/>
+              action="update_quantity_action_window" sequence='41'/>
           <menuitem name="Transfers" id="zadara_inventory.menu_4_2" parent="zadara_inventory.menu_4"
-              action="transfer_action_window"/>
+              action="transfer_action_window" sequence='42'/>
           
-      <menuitem name="Inventory Report" id="zadara_inventory.menu_5_1" parent="zadara_inventory.menu_1"
-              action="launch_session_w" />  
+      <menuitem name="Quick Inventory Report" id="zadara_inventory.menu_5_1" parent="zadara_inventory.menu_5"
+              action="launch_session_" sequence='51'/>  
  
           
-      <menuitem name="Inventory Report With Serial Numbers" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
-              action="launch_session_wizard" groups="zadara_inventory.group_manager"/>       
+      <menuitem name="Inventory Report" id="zadara_inventory.menu_5_2" parent="zadara_inventory.menu_5"
+              action="launch_session_wizard" groups="zadara_inventory.group_manager" sequence='52'/>       
       <menuitem name="Move History" id="zadara_inventory.menu_5_3" parent="zadara_inventory.menu_5"
-              action="zadara_inventory_product_history" groups="zadara_inventory.group_manager"/>
+              action="zadara_inventory_product_history" groups="zadara_inventory.group_manager" sequence='53'/>
   </data>
 </odoo>

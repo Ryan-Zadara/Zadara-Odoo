@@ -12,7 +12,7 @@
           <field name="product_name"/>
             <field name="update_date" string="date"/>
             <field name="serial_number"/>
-            <field name="t_quantity" string="Quantity"/>
+            <field name="quantity" string="Quantity"/>
         </tree>           
       </field>
     </record>

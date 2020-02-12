@@ -36,7 +36,7 @@
         'views/product.xml',
         'views/product_history.xml',
         'wizard/inv_report_calc.xml',
-      
+        'wizard/q_mi.xml',
         'views/update_quantity.xml',
         'views/transfer.xml',
         'views/menus.xml',

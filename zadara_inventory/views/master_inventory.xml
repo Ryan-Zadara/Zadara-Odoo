@@ -17,8 +17,8 @@
           <field name="serial_number"/>
           <field name="location_id"/> 
             <field name="quantity"/>
-         
-        </tree>
+         <field name="report_q_mi" invisible='1'/>
+        </tree>    
       </field>
     </record>
 

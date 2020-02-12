@@ -38,7 +38,7 @@ class product_history(models.Model):
     
     def ph_return_tq_wl(self,p_id,l_id):
         tot = 0
-        
+       
         for x in self: 
             #raise UserError(l_id)
             if x.product_id.id == p_id and x.location_id.id == l_id:

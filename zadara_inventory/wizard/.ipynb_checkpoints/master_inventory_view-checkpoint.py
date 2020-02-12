@@ -12,9 +12,10 @@ class master_inventory_view(models.TransientModel):
     
     location_id = fields.Many2one('zadara_inventory.locations')
  
+   # by_location = fields.Boolean()
     at_date = fields.Date(default=datetime.now())
    
-   
+       
     
     bool_at_date = fields.Date(default=datetime.now())
     
@@ -25,20 +26,19 @@ class master_inventory_view(models.TransientModel):
        # else:
            # raise UserError(datetime.today())
         #    self.bool_at_date = False
+    
+
+        
+    
     def calc_qmi(self): 
         mi_t = self.env['zadara_inventory.master_inventory'].search([])
         products = self.env['zadara_inventory.product'].search([])
-        
+        #temp_all = self.env['zadara_inventory.product']
         start_date = self.at_date.strftime('%Y-%m-%d')
         end_date = self.bool_at_date.strftime('%Y-%m-%d')
         
-        if start_date == end_date:
         
-            
-            
-
-
-            
+        if start_date == end_date:
             if self.location_id:
                 for p in products: 
                     p.total_quantity = mi_t.return_tq_wl(p.id,self.location_id)
@@ -56,13 +56,11 @@ class master_inventory_view(models.TransientModel):
             else:
                 for x in mi_t:
                     updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.at_date],['product_id.id','=',x.product_id.id],['location_id.id','=',self.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
-                
                     all = all | updates
-                #raise UserError(all)
-
             for p in products: 
                 p.total_quantity = all.ph_return_tq(p.id)
                 p.locat_loc_id = self.location_id.name
+       
     # else:
         #    mi_t = self.env['zadara_inventory.product_history'].search(['date_','<=', self.at_date],order="date_ desc", limit=1)
          #   if self.location_id:

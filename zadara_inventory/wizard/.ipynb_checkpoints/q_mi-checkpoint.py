@@ -6,18 +6,14 @@ from datetime import datetime
 from odoo.exceptions import ValidationError , UserError
 
 
-class master_inventory_view(models.TransientModel):
-    _name = 'zadara_inventory.master_inventory_view'
+class q_mi(models.TransientModel):
+    _name = 'zadara_inventory.q_mi'
     _description = 'Stock Quantity History'
     
-    location_id = fields.Many2one('zadara_inventory.locations')
- 
-   # by_location = fields.Boolean()
-    at_date = fields.Date(default=datetime.now())
-   
-       
     
-    bool_at_date = fields.Date(default=datetime.now())
+ 
+    by_product = fields.Boolean()
+
     
    # @api.onchange('at_date')
     #def chng_b(self):
@@ -30,37 +26,56 @@ class master_inventory_view(models.TransientModel):
 
         
     
-    def calc_qmi(self): 
+    def qmi(self): 
         mi_t = self.env['zadara_inventory.master_inventory'].search([])
-        products = self.env['zadara_inventory.product'].search([])
+        #products = self.env['zadara_inventory.product'].search([])
         #temp_all = self.env['zadara_inventory.product']
-        start_date = self.at_date.strftime('%Y-%m-%d')
-        end_date = self.bool_at_date.strftime('%Y-%m-%d')
+       # start_date = self.at_date.strftime('%Y-%m-%d')
+       # end_date = self.bool_at_date.strftime('%Y-%m-%d')
+       # for x in mi_t:
+            
+        all = self.env['zadara_inventory.master_inventory']
         
+        all = mi_t
         
-        if start_date == end_date:
-            if self.location_id:
-                for p in products: 
-                    p.total_quantity = mi_t.return_tq_wl(p.id,self.location_id)
-                    p.locat_loc_id = self.location_id.name
-            else:
-                for p in products: 
-                    p.total_quantity = mi_t.return_tq(p.id)
-        else:
-            all = self.env['zadara_inventory.product_history'].browse([])
-            if not self.location_id:
-                for x in mi_t:
-                    updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.at_date],['product_id.id','=',x.product_id.id],['location_id','=',x.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
+        unt = all
+        #if self.by_location:
+        h = self.env['zadara_inventory.master_inventory']
+        for x in all:     
+           # raise UserError(x.product_id.id)
+            if h.product_id.id == x.product_id.id and h.location_id.id == x.location_id.id:
+                if self.by_product:
+                    all = all - x 
+                else:
+                    x.report_q_mi = h.report_q_mi
+                    h = x 
+                    
+            else:    
+                count = unt.return_tq_wl(x.product_id.id,x.location_id.id)
+            
+                #raise UserError(count)
+            
+                x.report_q_mi = count
+                h = x
+        
+              
+            #temp3 = self.env['zadara_inventory.product_history']
+        if self.by_product:
+            temp2 = all #self.env['zadara_inventory.product_history'].search(['ids','in',all.ids])
+                #self.env['zadara_inventory.product_history'].browse(all)
+                #temp2 = 
+            temp = all
 
-                    all = all | updates
-            else:
-                for x in mi_t:
-                    updates = self.env['zadara_inventory.product_history'].search((['date_','<=', self.at_date],['product_id.id','=',x.product_id.id],['location_id.id','=',self.location_id.id],['serial_number','=',x.serial_number]),order="date_ desc", limit=1)
-                    all = all | updates
-            for p in products: 
-                p.total_quantity = all.ph_return_tq(p.id)
-                p.locat_loc_id = self.location_id.name
-       
+            for x in temp2: 
+                for y in all:  
+
+                    if y.product_id.id == x.product_id.id and y.location_id.id == x.location_id.id:
+
+
+                        if x.id != y.id and y.id > x.id:
+                            all = all - y
+        
+        
     # else:
         #    mi_t = self.env['zadara_inventory.product_history'].search(['date_','<=', self.at_date],order="date_ desc", limit=1)
          #   if self.location_id:
@@ -112,9 +127,9 @@ class master_inventory_view(models.TransientModel):
             #'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
             'view_mode': 'tree',
             'name': 'Products',
-            'res_model': 'zadara_inventory.product',
+            'res_model': 'zadara_inventory.master_inventory',
             
-            'domain': [['id','in',products.ids]],
+            'domain': [['id','in',all.ids]],
         }
         return action
        
