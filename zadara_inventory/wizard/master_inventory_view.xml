@@ -19,7 +19,7 @@
     </record>
     
        <act_window id="launch_session_w"
-                    name="import"
+                    name="INV at Date"
                    binding_model = 'zadara_inventory.product'
                     res_model="zadara_inventory.master_inventory_view"
                     view_mode="form"

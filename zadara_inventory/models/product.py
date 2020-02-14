@@ -11,12 +11,14 @@ class product(models.Model):
     name = fields.Char(compute='corr_name',store=True)
     product_name = fields.Char(required=True)
     #product_id = fields.Char()
-    part_number = fields.Char()
-    product_category = fields.Char()
+    part_number = fields.One2many('zadara_inventory.product_number', 'product_id')
+    product_category = fields.Selection([('Drive','Drive'), ('Cable','Cable'), ('transceiver','Transceiver'),('Tray','Tray'),('Server','Server'),('Switch','Switch'),('Firewall','Firewall'),('Card','Card')])
     
     mi_product = fields.One2many('zadara_inventory.master_inventory', 'product_id')
     
     locat_loc_id = fields.Char()
+    
+    vendor_id = fields.Many2one('zadara_inventory.vendors')
     
     total_quantity = fields.Integer()
     #product_grab = fields.Char() #must be product
@@ -24,9 +26,10 @@ class product(models.Model):
     product_trackSerialNumber = fields.Boolean(string="Product Track By Serial Number:")
     
     location_id = fields.Many2one('zadara_inventory.locations')
-    @api.depends('product_name','name')
+    @api.depends('product_name','name','vendor_id','product_category')
     def corr_name(self):
-        self.name = self.product_name
+        self.name = str(self.product_category) + ' ' + str(self.vendor_id.short_name) + ' ' + str(self.product_name)
+       #self.name = self.product_name
     def get_track(self):
         return self.product_trackSerialNumber
     

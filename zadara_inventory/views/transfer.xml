@@ -8,10 +8,11 @@
       <field name="model">zadara_inventory.transfer</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="transfer_name"/>
+        
                      <field name="source_location_id"/>
                      <field name="destination_location_id"/>
           <field name="location_id"/>
+            <field name='trackingpo_number'/>
             <field name="move_info"/>        
           <field name="product_name"/>
             <field name="transfer_date"/>
@@ -28,7 +29,7 @@
       <field name="arch" type="xml">
         <form>
             <group colspan='2'>
-          <field name="transfer_name" invisible='1'/>
+         
             <group colspan='1' col='1'>
                 <field name="product_id" string="Product Name"/>
                 <field name="source_location_id" string="Source Location"/>
@@ -50,7 +51,7 @@
                        </group>
                 <group colspan='2' col='2'>
             <field name="move_info" string="Move Info"/>
-            
+            <field name='trackingpo_number'/>
             </group>
             </group>
         </form>

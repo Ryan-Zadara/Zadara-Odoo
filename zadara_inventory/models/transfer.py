@@ -9,9 +9,11 @@ class transfer(models.Model):
     _description = 'zadara_inventory.transfer'
 
     
-    transfer_name = fields.Integer()
+    #transfer_name = fields.Integer(default='1')
     
-    move_info = fields.Char(help="Tracking number for transfers, PO number for purchases")
+    move_info = fields.Char(string="Notes")
+    
+    trackingpo_number = fields.Char(required=True, string="Tracking/PO Number: ", help="Tracking number for transfers, PO number for purchases")
     
     transfer_type = fields.Selection([('Transfer','Transfer'), ('Purchase','Purchase')],required=True)
     
@@ -33,7 +35,7 @@ class transfer(models.Model):
     
     responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')], required=True)
     
-    transfer_date = fields.Datetime(default=datetime.now())
+    transfer_date = fields.Datetime(default=lambda self: fields.datetime.now())
     
     transfer_tag = fields.Char(readonly=True)
 
@@ -72,6 +74,8 @@ class transfer(models.Model):
             #    raise UserError("no product")
             #if val.get('reponsible_party') == '':
             #    raise UserError("no responsible party")
+            if val.get('source_location_id') == val.get("destination_location_id"):
+                raise UserError("source and destination location must be different")
             if not val.get('transfer_date'):
                 val['transfer_date'] = datetime.now()
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
@@ -135,7 +139,7 @@ class transfer(models.Model):
           
                 #vals['location_id'] = vals['destination_location_id']
             del vals['move_info']
-          
+            del vals['trackingpo_number']
             del vals['t_quantity']
             del vals['transfer_date']
             del vals['responsible_party']

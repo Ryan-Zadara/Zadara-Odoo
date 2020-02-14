@@ -13,11 +13,11 @@ class master_inventory_view(models.TransientModel):
     location_id = fields.Many2one('zadara_inventory.locations')
  
    # by_location = fields.Boolean()
-    at_date = fields.Date(default=datetime.now())
+    at_date = fields.Date(default=lambda self: fields.datetime.now())
    
        
     
-    bool_at_date = fields.Date(default=datetime.now())
+    bool_at_date = fields.Date(default=lambda self: fields.datetime.now())
     
    # @api.onchange('at_date')
     #def chng_b(self):
