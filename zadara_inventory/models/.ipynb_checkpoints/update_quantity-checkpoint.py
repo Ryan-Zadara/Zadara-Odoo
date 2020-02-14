@@ -24,9 +24,9 @@ class update_quantity(models.Model):
     
     responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')])
     
-    update_date = fields.Datetime(default=datetime.now())
-    #def date_set(self):
-     #   return datetime.now()
+    update_date = fields.Datetime(default=lambda self: fields.datetime.now())
+    #def date_set(self): 
+     #   return datetime.now()datetime.strptime(Date, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M')
     update_tag = fields.Char(readonly=True)
     
     t_quantity = fields.Integer(readonly=True)
@@ -76,6 +76,7 @@ class update_quantity(models.Model):
     
     @api.model_create_multi
     def create(self,vals_list):
+        #datetime.strptime(Date, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M')
        # uqn_val = self.comp_qn()
        # for x in vals_list:
          #   x['update_quantity_name'] = uqn_val

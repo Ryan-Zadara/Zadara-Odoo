@@ -9,7 +9,7 @@ class inv_report_calc(models.TransientModel):
     _name = 'zadara_inventory.inv_report_calc'
     _description = 'Stock Quantity History'
     
-    inv_at_date = fields.Datetime(default = datetime.now())
+    inv_at_date = fields.Datetime(default=lambda self: fields.datetime.now())
     
     by_product = fields.Boolean()
    
@@ -76,8 +76,9 @@ class inv_report_calc(models.TransientModel):
         h = self.env['zadara_inventory.master_inventory']
         for x in z:     
            # raise UserError(x.product_id.id)
-            if h.product_id.id == x.product_id.id and h.location_id.id == x.location_id.id:
+            if h.product_id.id == x.product_id.id and h.location_id.id == x.location_id.id and x.serial_number != 'N/A':
                 if self.by_product:
+                    #raise UserError(x)
                     all = all - x 
                 else:
                     x.t_quantity = h.t_quantity

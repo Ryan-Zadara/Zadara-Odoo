@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="zadara_inventory_q_mi" model="ir.ui.view">
-        <field name="name">Inventory Report at Date</field>
+        <field name="name">Inventory Report</field>
         <field name="model">zadara_inventory.q_mi</field>
         <field name="arch" type="xml">
             <form string="Choose your date">
@@ -18,7 +18,7 @@
     </record>
     
        <act_window id="launch_session_"
-                    name="import"
+                    name="INV Report"
                    binding_model = 'zadara_inventory.master_inventory'
                     res_model="zadara_inventory.q_mi"
                     view_mode="form"

@@ -43,7 +43,7 @@ class q_mi(models.TransientModel):
         h = self.env['zadara_inventory.master_inventory']
         for x in all:     
            # raise UserError(x.product_id.id)
-            if h.product_id.id == x.product_id.id and h.location_id.id == x.location_id.id:
+            if h.product_id.id == x.product_id.id and h.location_id.id == x.location_id.id and x.serial_number != 'N/A':
                 if self.by_product:
                     all = all - x 
                 else:
@@ -57,7 +57,7 @@ class q_mi(models.TransientModel):
             
                 x.report_q_mi = count
                 h = x
-        
+        #raise UserError(all)
               
             #temp3 = self.env['zadara_inventory.product_history']
         if self.by_product:

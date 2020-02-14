@@ -6,7 +6,7 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root" groups="zadara_inventory.group_user" sequence='1' />
+    <menuitem name="zadara_inventory" id="zadara_inventory.menu_root" groups="zadara_inventory.group_user" web_icon="zadara_inventory,static/src/img/icon.png" sequence='1' />
 
     <!-- menu categories -->
 
@@ -15,13 +15,20 @@
  -->
       
       
-      <menuitem name="Products" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root"  action='productqview_action_server' sequence='20'/>
-      
-      
+      <menuitem name="Products" id="zadara_inventory.menu_2" parent="zadara_inventory.menu_root" sequence='20'/> 
+              <menuitem name="Products" id="zadara_inventory.menu_2_1" parent="zadara_inventory.menu_2"
+              action='productqview_action_server' sequence='21'/>
+                <menuitem name="Product Number" id="zadara_inventory.menu_2_2" parent="zadara_inventory.menu_2"
+              action='zadara_inventory_product_number' sequence='22'/>
 
 
       
-            <menuitem name="Locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root" action="zadara_inventory_locations" sequence='30'/>
+            <menuitem name="Locations" id="zadara_inventory.menu_3" parent="zadara_inventory.menu_root"  sequence='30'/>
+                    <menuitem name="Locations" id="zadara_inventory.menu_3_1" parent="zadara_inventory.menu_3"
+              action="zadara_inventory_locations" sequence='31'/>
+                          <menuitem name="Vendors" id="zadara_inventory.menu_3_2" parent="zadara_inventory.menu_3"
+              action="zadara_inventory_vendors" sequence='31'/>
+      
 
     <menuitem name="Moves" id="zadara_inventory.menu_4" parent="zadara_inventory.menu_root" action="zadara_inventory_moves" sequence='40'/>
          <menuitem name="Reports" id="zadara_inventory.menu_5" parent="zadara_inventory.menu_root" groups="zadara_inventory.group_user" sequence='50' />

@@ -35,6 +35,8 @@
         'views/product.xml',
         'views/product.xml',
         'views/product_history.xml',
+        'views/product_number.xml',
+        'views/vendors.xml',
         'wizard/inv_report_calc.xml',
         'wizard/q_mi.xml',
         'views/update_quantity.xml',

@@ -19,7 +19,7 @@ class product_history(models.Model):
     total_quantity = fields.Char()
     location_id  = fields.Many2one('zadara_inventory.locations')
     quantity = fields.Integer()
-    date_ = fields.Datetime(default=datetime.now())
+    date_ = fields.Datetime(default=lambda self: fields.datetime.now())
     t_quantity = fields.Integer()
     
     def if_date(self,date,test_date):
