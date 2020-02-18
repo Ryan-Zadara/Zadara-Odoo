@@ -7,15 +7,36 @@
       <field name="model">zadara_inventory.product</field>
       <field name="arch" type="xml">
         <tree>
-            <field name="name" invisible='1'/>
+            <field name="name"/>
             <field name="mi_product"  invisible='1'/>
+            <field name="total_quantity"/>
+          <field name="product_name" invisible='1'/>
+          <field name="part_number"/>
+            <field name="vendor_id" invisible='1'/>
+          <field name="product_category" invisible='1'/>
+        <field name="product_trackSerialNumber"/>
+        </tree>
+      </field>
+    </record>
+    
+
+    <record model="ir.ui.view" id="product_form">
+      <field name="name">Product</field>
+      <field name="model">zadara_inventory.product</field>
+      <field name="arch" type="xml">
+        <form>
+            <group>
+            <field name="name" invisible='1'/>
+            <field name="mi_product" invisible='1'/>
             <field name="total_quantity"/>
           <field name="product_name"/>
           <field name="part_number"/>
             <field name="vendor_id"/>
           <field name="product_category"/>
         <field name="product_trackSerialNumber"/>
-        </tree>
+                 <field name="vendor_id"/>
+            </group>
+        </form>
       </field>
     </record>
     
