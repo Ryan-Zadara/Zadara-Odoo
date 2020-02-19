@@ -9,12 +9,13 @@
         <tree>
             <field name="name"/>
             <field name="mi_product"  invisible='1'/>
-            <field name="total_quantity"/>
+          
           <field name="product_name" invisible='1'/>
           <field name="part_number"/>
             <field name="vendor_id" invisible='1'/>
           <field name="product_category" invisible='1'/>
-        <field name="product_trackSerialNumber"/>
+        <field name="product_trackSerialNumber"/>  
+            <field name="total_quantity"/>
         </tree>
       </field>
     </record>
@@ -26,7 +27,7 @@
       <field name="arch" type="xml">
         <form>
             <group>
-            <field name="name" invisible='1'/>
+            <field name="name"/>
             <field name="mi_product" invisible='1'/>
             <field name="total_quantity"/>
           <field name="product_name"/>
