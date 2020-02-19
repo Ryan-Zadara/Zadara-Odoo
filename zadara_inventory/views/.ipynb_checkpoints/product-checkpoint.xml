@@ -3,7 +3,7 @@
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="product_list">
-      <field name="name">product list</field>
+      <field name="name">Products</field>
       <field name="model">zadara_inventory.product</field>
       <field name="arch" type="xml">
         <tree>
@@ -21,7 +21,7 @@
     
 
     <record model="ir.ui.view" id="product_form">
-      <field name="name">Product</field>
+      <field name="name">Products</field>
       <field name="model">zadara_inventory.product</field>
       <field name="arch" type="xml">
         <form>

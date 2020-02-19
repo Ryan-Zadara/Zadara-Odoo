@@ -4,7 +4,7 @@
 
 
     <record model="ir.ui.view" id="transfer_list">
-      <field name="name">product list</field>
+      <field name="name">Transfers</field>
       <field name="model">zadara_inventory.transfer</field>
       <field name="arch" type="xml">
         <tree>
@@ -24,7 +24,7 @@
 
 
           <record model="ir.ui.view" id="transfer_form_list">
-      <field name="name">product list</field>
+      <field name="name">Transfers</field>
       <field name="model">zadara_inventory.transfer</field>
       <field name="arch" type="xml">
         <form>
