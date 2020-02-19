@@ -27,7 +27,7 @@
       <field name="arch" type="xml">
         <form>
             <group>
-            <field name="name"/>
+            <field name="name" invisible='0'/>
             <field name="mi_product" invisible='1'/>
             <field name="total_quantity"/>
           <field name="product_name"/>
