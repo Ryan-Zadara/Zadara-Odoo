@@ -21,7 +21,7 @@ class master_inventory(models.Model):
     
     quantity = fields.Integer()
     #product_ids = inv_product.ids
-    
+    product_number = fields.Many2one('zadara_inventory.product_number')
  
     report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
     

@@ -3,13 +3,14 @@
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="update_quantity_list">
-      <field name="name">product list</field>
+      <field name="name">Update Quantity</field>
       <field name="model">zadara_inventory.update_quantity</field>
       <field name="arch" type="xml">
         <tree>
           
           <field name="location_id"/>
           <field name="product_name"/>
+            
             <field name="update_date" string="date"/>
             <field name="serial_number"/>
             <field name="quantity" string="Quantity"/>
@@ -22,7 +23,7 @@
       
       
                 <record model="ir.ui.view" id="update_qunantity_form_list">
-      <field name="name">product list</field>
+      <field name="name">Update Quantity</field>
       <field name="model">zadara_inventory.update_quantity</field>
       <field name="arch" type="xml">
         <form>
@@ -31,6 +32,8 @@
             <group colspan='1' col='1'>
                      <field name="location_id" string="Location"/>
                      <field name="product_id" string="Product Name"/>
+                    <field name="product_number" string="Product Number"/>
+
                     <field name="serial_number" string="Serial Number"/>
                 </group>
                 <group colspan='1' col='1'>       

@@ -21,6 +21,7 @@ class update_quantity(models.Model):
     serial_number = fields.Char()
     
     quantity = fields.Integer()
+    product_number = fields.Many2one('zadara_inventory.product_number')
     
     responsible_party = fields.Selection([('Irvine','Irvine'), ('Yokneam','Yokneam')])
     
@@ -81,14 +82,18 @@ class update_quantity(models.Model):
        # for x in vals_list:
          #   x['update_quantity_name'] = uqn_val
         for val in vals_list:
+            
             val['t_quantity'] = val.get('quantity')
             if not val.get('product_id'):
                 raise UserError("no product")
             if val.get('reponsible_party') == '':
                 raise UserError("no responsible party")
+            
+            if not self.env['zadara_inventory.product_number'].search([['product_id.id','=',val.get("product_id")],['id','=',val.get('product_number')]]):
+                raise UserError('product number not found')
             #if not val.get('update_date'):
             #    val['update_date'] = datetime.now()
-            
+           
             if 0 > val.get("quantity"):
                 raise UserError(val.get("serial_number"))
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
@@ -151,6 +156,8 @@ class update_quantity(models.Model):
     def create_to_mi(self, vals_list):
         
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
+        if vals_list.get('product_number'):
+            del vals_list['product_number']
         self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
@@ -160,6 +167,8 @@ class update_quantity(models.Model):
         sn = vals_list.get('serial_number')
         mi = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', x], ['serial_number', '=', sn],['location_id','=',vals_list.get('location_id')]])
         mi.write(vals_list)
+        if vals_list.get('product_number'):
+            del vals_list['product_number']
         self.env['zadara_inventory.product_history'].create(vals_list)
         return 
     
