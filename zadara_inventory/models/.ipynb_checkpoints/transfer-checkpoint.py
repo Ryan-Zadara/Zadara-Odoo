@@ -15,7 +15,7 @@ class transfer(models.Model):
     
     trackingpo_number = fields.Char(required=True, string="Tracking/PO Number: ", help="Tracking number for transfers, PO number for purchases")
     
-    transfer_type = fields.Selection([('Transfer','Transfer'), ('Purchase','Purchase')],required=True)
+    transfer_type = fields.Selection([('Transfer','Transfer'), ('Purchase','Purchase'), ('Internal','Internal')],required=True)
     
     source_location_id = fields.Many2one('zadara_inventory.locations',required=True)
     
