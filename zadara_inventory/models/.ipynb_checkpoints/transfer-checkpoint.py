@@ -138,6 +138,7 @@ class transfer(models.Model):
             #del vals['transfer_name']
           
                 #vals['location_id'] = vals['destination_location_id']
+            #if vals.get('move_info'):
             del vals['move_info']
             del vals['trackingpo_number']
             del vals['t_quantity']

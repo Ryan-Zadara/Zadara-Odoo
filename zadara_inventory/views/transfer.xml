@@ -13,7 +13,7 @@
                      <field name="destination_location_id"/>
           <field name="location_id"/>
             <field name='trackingpo_number'/>
-            <field name="move_info"/>        
+            <field name="move_info"  string='Notes'/>        
           <field name="product_name"/>
             <field name="transfer_date"/>
         <field name="serial_number"/>
@@ -50,7 +50,7 @@
                    <field name="transfer_type" string="Transfer Type"/>
                        </group>
                 <group colspan='2' col='2'>
-            <field name="move_info" string="Move Info"/>
+            <field name="move_info" string='Notes'/>
             <field name='trackingpo_number'/>
             </group>
             </group>
