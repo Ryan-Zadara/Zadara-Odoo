@@ -42,6 +42,7 @@ class transfer(models.Model):
     transfer_source_flag = fields.Char(readonly=True)
     transfer_source_quant = fields.Integer()
 
+    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')], default='New')
     
     #check valid, location_id, product_id 
 
@@ -126,7 +127,11 @@ class transfer(models.Model):
                     val['transfer_tag'] = 'write'
             
             
-            
+            if val.get('p_tag') == None and track:
+                val['p_tag'] = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]).p_tag
+                if not val.get('p_tag') == 'Obsolete':
+                    if self.env['zadara_inventory.locations'].search([['id','=',val.get('source_location_id')]]).location_type == 'Customer':
+                        val['p_tag'] = 'Used'
         
             
         res = super(transfer, self).create(vals_list)
@@ -189,6 +194,8 @@ class transfer(models.Model):
         #raise UserError(mi.product_id)
         del vals_list['source_location_id']#if self.env['zadara_inventory.product'].search([['id','=',vals_list.get("product_id")],['product_trackSerialNumber','=',True]]):
         mi.write(vals_list)
+        if vals_list.get('p_tag'):
+            del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].recurcreate(vals_list)
         #else:
           #  mi.search([['product_id.id', '=', x], ['serial_number', '=', sn],['location_id.id','=',vals_list.get('location_id')]])
@@ -202,6 +209,8 @@ class transfer(models.Model):
         #raise UserError(mi.product_id)
         del vals_list['source_location_id']#if self.env['zadara_inventory.product'].search([['id','=',vals_list.get("product_id")],['product_trackSerialNumber','=',True]]):
         mi.write(vals_list)
+        if vals_list.get('p_tag'):
+            del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
         #else:
           #  mi.search([['product_id.id', '=', x], ['serial_number', '=', sn],['location_id.id','=',vals_list.get('location_id')]])
@@ -217,6 +226,8 @@ class transfer(models.Model):
         
         x = self
         new_addition = x.env['zadara_inventory.master_inventory'].create(vals_list)
+        if vals_list.get('p_tag'):
+            del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
         
     
