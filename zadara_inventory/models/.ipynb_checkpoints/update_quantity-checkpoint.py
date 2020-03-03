@@ -19,7 +19,7 @@ class update_quantity(models.Model):
     product_name = fields.Char(related="product_id.product_name")
     
     serial_number = fields.Char()
-    
+    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')], default='New')
     quantity = fields.Integer()
     product_number = fields.Many2one('zadara_inventory.product_number')
     
@@ -107,12 +107,12 @@ class update_quantity(models.Model):
                 if val.get('serial_number') == 'N/A':
                     raise UserError('bad sns')                
                 if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]):
-                    if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','!=', val.get('quantity')]]):
+               #     if #self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','!=', val.get('quantity')]]):
                         #del val["product_trackSerialNumber"]
                         #del val["update_quantity_name"]
-                        val['update_tag'] = 'write'
-                    elif self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','=', val.get('quantity')]]):
-                        raise UserError("cannot have 2 same serial numbers ")
+                   #     val['update_tag'] = 'write'
+                 #   elif self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','=', val.get('quantity')]]):
+                    raise UserError("cannot have 2 same serial numbers ")
                 else:        
                     val['update_tag'] = 'create'
                 #self.check_create_qu(q) 
@@ -158,6 +158,8 @@ class update_quantity(models.Model):
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
         if vals_list.get('product_number'):
             del vals_list['product_number']
+        if vals_list.get('p_tag'):
+            del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
@@ -169,6 +171,8 @@ class update_quantity(models.Model):
         mi.write(vals_list)
         if vals_list.get('product_number'):
             del vals_list['product_number']
+        if vals_list.get('p_tag'):
+            del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
         return 
     

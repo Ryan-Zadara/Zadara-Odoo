@@ -20,6 +20,8 @@ class master_inventory(models.Model):
     #inv_product_sn = fields.Many2one('zadara_inventory.serialnumbers')#compute="compute_sn")#compute="compute_sn", inverse="inv_compute_sn")
     
     quantity = fields.Integer()
+    
+    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')])
     #product_ids = inv_product.ids
     product_number = fields.Many2one('zadara_inventory.product_number')
  
