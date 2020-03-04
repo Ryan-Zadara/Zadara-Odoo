@@ -28,6 +28,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'wizard/master_inventory_view.xml',
+         'views/mi_mass_update.xml',
         'views/views.xml',
         'views/location.xml',
         'views/master_inventory.xml',

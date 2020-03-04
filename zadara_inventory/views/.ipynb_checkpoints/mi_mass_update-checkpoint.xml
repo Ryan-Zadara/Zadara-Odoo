@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="mi_mass_update_list">
+      <field name="name">mass list</field>
+      <field name="model">zadara_inventory.mi_mass_update</field>
+      <field name="arch" type="xml">
+        <tree>
+              <field name="p_tag" string ="Product Tag"/>
+                     <field name="product_number"/>
+             <field name="serial_number"/>
+          <field name="location_id"/> 
+            <field name="quantity"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="zadara_inventory_mi_mass_update">
+      <field name="name">mass update</field>
+      <field name="res_model">zadara_inventory.mi_mass_update</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   
+
+    <!-- Top menu item -->
+
+   
+  </data>
+</odoo>
