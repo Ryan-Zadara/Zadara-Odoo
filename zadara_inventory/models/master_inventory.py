@@ -13,7 +13,9 @@ class master_inventory(models.Model):
 
     
     product_id = fields.Many2one('zadara_inventory.product')
-    product_name = fields.Char(compute="set_name",store=True)
+
+    #product_name = fields.Char(compute="set_name",store=True)
+
     
 
     
@@ -30,9 +32,11 @@ class master_inventory(models.Model):
  
     report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
     
-    @api.depends('product_id','product_name','p_tag','serial_number')
-    def set_name(self):
-        self.product_name = self.product_id.name
+
+    #@api.depends('product_id')
+   # def set_name(self):
+     #   self.product_name = self.product_id.name
+
     #def check_invforsn(self,pid,sn):
      #   for i in self:
     #        if i.product_id == pid:
