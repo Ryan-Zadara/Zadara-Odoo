@@ -42,7 +42,7 @@ class transfer(models.Model):
     transfer_source_flag = fields.Char(readonly=True)
     transfer_source_quant = fields.Integer()
 
-    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')], default='New')
+    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')])
     
     #check valid, location_id, product_id 
 
@@ -76,7 +76,8 @@ class transfer(models.Model):
             #if val.get('reponsible_party') == '':
             #    raise UserError("no responsible party")
             if val.get('source_location_id') == val.get("destination_location_id"):
-                raise UserError("source and destination location must be different")
+                raise UserError(val.get("p_tag"))
+                #raise UserError("source and destination location must be different")
             if not val.get('transfer_date'):
                 val['transfer_date'] = datetime.now()
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
@@ -98,6 +99,7 @@ class transfer(models.Model):
                    # val['transfer_source_quant'] = 0 
                     #do stuff here
                 else:
+                    #raise UserError(val.get("destination_location_id"))
                     raise UserError("bad no product found")
             else:
 
@@ -127,7 +129,7 @@ class transfer(models.Model):
                     val['transfer_tag'] = 'write'
             
             
-            if val.get('p_tag') == None and track:
+            if val.get('p_tag') == False and track:
                 val['p_tag'] = self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]).p_tag
                 if not val.get('p_tag') == 'Obsolete':
                     if self.env['zadara_inventory.locations'].search([['id','=',val.get('source_location_id')]]).location_type == 'Customer':
