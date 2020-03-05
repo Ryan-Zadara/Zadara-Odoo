@@ -7,7 +7,7 @@
       <field name="model">zadara_inventory.mi_mass_update</field>
       <field name="arch" type="xml">
         <tree>
-             
+               <field name="p_tag"/>
                      <field name="product_number"/>
              <field name="serial_number"/>
           <field name="location_id"/> 

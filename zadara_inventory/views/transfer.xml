@@ -45,7 +45,7 @@
             </group>
             <group colspan='1' col='2'>
                 <field name="responsible_party" string="Responsible Party"/>
-                
+                  <field name="p_tag"/>
                  </group>
                   <group colspan='1' col='2'>
                    <field name="transfer_type" string="Transfer Type"/>

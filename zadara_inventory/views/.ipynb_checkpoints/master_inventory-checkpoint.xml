@@ -13,10 +13,10 @@
           <tree string="mi_tree" create="false"  >
           <!-- <button name="launch_session_wizard" type="object"
                 string="Subscribe" class="btn-primary"/>-->
-
+    
             <field name="product_id"/>
             <!--  <field name="product_name"/>-->
-
+            <field name="p_tag"/>
           <field name="serial_number"/>
           <field name="location_id"/> 
             <field name="quantity"/>
