@@ -16,7 +16,8 @@ class mi_mass_update(models.Model):
     quantity = fields.Integer()
     product_number = fields.Many2one('zadara_inventory.product_number')
     #p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')])
-  
+    p_tag = fields.Many2one('zadara_inventory.p_tag', string="Product Tag")
+
     
     @api.model_create_multi
     def create(self,vals_list):
