@@ -95,7 +95,7 @@ class update_quantity(models.Model):
             #    val['update_date'] = datetime.now()
            
             if 0 > val.get("quantity"):
-                raise UserError(val.get("serial_number"))
+                raise UserError('No quantities less than 0')
             track = self.env['zadara_inventory.product'].search([['id','=',val.get("product_id")],['product_trackSerialNumber','=',True]])
             if not val.get('location_id'):
                 raise UserError("no location")
@@ -106,7 +106,7 @@ class update_quantity(models.Model):
                     raise UserError('bad sn line')
                 if val.get('serial_number') == 'N/A':
                     raise UserError('bad sns')                
-                if self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')]]):
+                if self.env['zadara_inventory.master_inventory'].search([['serial_number', '=', val.get('serial_number')]]):
                #     if #self.env['zadara_inventory.master_inventory'].search([['product_id', '=', val.get('product_id')], ['serial_number', '=', val.get('serial_number')],['quantity','!=', val.get('quantity')]]):
                         #del val["product_trackSerialNumber"]
                         #del val["update_quantity_name"]
