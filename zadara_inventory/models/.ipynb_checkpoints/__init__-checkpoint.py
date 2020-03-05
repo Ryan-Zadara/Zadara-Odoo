@@ -11,3 +11,4 @@ from . import product_history
 from . import product_number
 from . import vendors
 from . import mi_mass_update
+from . import p_tag

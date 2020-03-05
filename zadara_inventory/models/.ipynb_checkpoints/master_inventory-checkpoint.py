@@ -26,17 +26,16 @@ class master_inventory(models.Model):
     
     quantity = fields.Integer()
     
-    p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')])
+   # p_tag = fields.Selection([('New','New'), ('Used','Used'),('Obsolete','Obsolete')])
     #product_ids = inv_product.ids
     product_number = fields.Many2one('zadara_inventory.product_number')
  
     report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
     
-
+    p_tag = fields.Many2one('zadara_inventory.p_tag', string="Product Tag")
     #@api.depends('product_id')
    # def set_name(self):
      #   self.product_name = self.product_id.name
-
 
     #def check_invforsn(self,pid,sn):
      #   for i in self:
