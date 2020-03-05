@@ -14,7 +14,7 @@
             <field name="update_date" string="date"/>
             <field name="serial_number"/>
             <field name="quantity" string="Quantity"/>
-            <field name="p_tag" string="Product Tag"/>
+         
         </tree>           
       </field>
     </record>
@@ -41,7 +41,7 @@
                 <field name="quantity" string="Quantity"/>
                 <field name="responsible_party" string="Responsible Party"/>
             <field name="update_date" string="Date"/>
-                <field name="p_tag" string="Product Tag"/>
+               
                 </group>
           
                

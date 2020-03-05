@@ -32,7 +32,7 @@ class master_inventory(models.Model):
  
     report_q_mi = fields.Integer(string="Total Quantity of item in Master Inventory", help="this field is only for reporting")
     
-    p_tag = fields.Many2one('zadara_inventory.p_tag', string="Product Tag")
+   
     #@api.depends('product_id')
    # def set_name(self):
      #   self.product_name = self.product_id.name
