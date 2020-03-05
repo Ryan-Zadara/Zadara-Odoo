@@ -29,7 +29,7 @@ class update_quantity(models.Model):
     #def date_set(self): 
      #   return datetime.now()datetime.strptime(Date, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M')
     update_tag = fields.Char(readonly=True)
-    p_tag = fields.Many2one('zadara_inventory.p_tag', string="Product Tag")
+   
     t_quantity = fields.Integer(readonly=True)
     #moveline = fields.Many2many('zadara_inventory.mlqu')
     #@api.depends('update_date')
@@ -158,8 +158,8 @@ class update_quantity(models.Model):
         new_addition = self.env['zadara_inventory.master_inventory'].create(vals_list)
         if vals_list.get('product_number'):
             del vals_list['product_number']
-        if vals_list.get('p_tag'):
-            del vals_list['p_tag']
+       # if vals_list.get('p_tag'):
+       #     del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
 
     def write_to_mi(self,vals_list):
@@ -171,8 +171,8 @@ class update_quantity(models.Model):
         mi.write(vals_list)
         if vals_list.get('product_number'):
             del vals_list['product_number']
-        if vals_list.get('p_tag'):
-            del vals_list['p_tag']
+      #  if vals_list.get('p_tag'):
+       #     del vals_list['p_tag']
         self.env['zadara_inventory.product_history'].create(vals_list)
         return 
     
