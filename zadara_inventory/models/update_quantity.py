@@ -29,8 +29,7 @@ class update_quantity(models.Model):
     #def date_set(self): 
      #   return datetime.now()datetime.strptime(Date, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M')
     update_tag = fields.Char(readonly=True)
-    p_tag = fields.Many2one('zadara_inventory.p_tag', string="Product Tag")
-
+   
     t_quantity = fields.Integer(readonly=True)
     #moveline = fields.Many2many('zadara_inventory.mlqu')
     #@api.depends('update_date')
